@@ -26,7 +26,7 @@
 		"persistent": false
 	},
     "chrome_url_overrides": {
-        "newtab": "myIndex.html"
+        "newtab": "index.html"
 	},
 	 "permissions": [
 		 "activeTab",
