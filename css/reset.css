@@ -1,4 +1,8 @@
 
+@font-face{
+			font-family: electrolize;
+			src: url("../ELECTRO.ttf");
+		}
 /* ------- This is the CSS Reset ------- */
 
 html, body, div, span, applet, object, iframe,
@@ -15,7 +19,7 @@ nav, output, ruby, section, summary, time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-	font: inherit;
+	font-family: electrolize;
 	vertical-align: baseline;
 }
 
@@ -35,7 +39,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 body {
 	line-height: 1;
-	font-family:方正行楷简体;
 }
 ol, ul {
 	list-style: none;
