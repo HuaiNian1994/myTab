@@ -1,7 +1,7 @@
 
 @font-face{
 			font-family: electrolize;
-			src: url("../ELECTRO.ttf");
+			src: url("../font/ELECTRO.ttf");
 		}
 /* ------- This is the CSS Reset ------- */
 
@@ -54,4 +54,6 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-
+html{
+	height: 100%;
+}

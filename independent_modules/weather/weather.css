@@ -1,0 +1,46 @@
+@font-face {
+  font-family: 'weather';
+  src: url('iconfont.eot');
+  src: url('iconfont.eot?#iefix') format('embedded-opentype'),
+    url('iconfont.woff2') format('woff2'),
+    url('iconfont.woff') format('woff'),
+    url('iconfont.ttf') format('truetype'),
+    url('iconfont.svg#iconfont') format('svg');
+}
+
+
+#weather {
+  position: absolute;
+  left: 70%;
+  top: 4%;
+
+  z-index: 999;
+}
+
+#weather span {
+  position: absolute;
+  display: inline-block;
+  width: 150px;
+  color: rgba(200, 200, 200, 0.6);
+}
+
+#weather #temperature {
+  font: 13px/50px Electrolize;
+  left: 35px;
+  top: 33px;
+}
+
+#weather #state {
+  font: 25px/50px Electrolize;
+  left: 95px;
+  top: 30px;
+}
+
+#weather #paint {
+  font-family: "weather" !important;
+  font-size: 55px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #fff;
+}
