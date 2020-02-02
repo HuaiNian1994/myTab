@@ -17,12 +17,22 @@
 			transition: all 2s ease;
 			margin-top: 5%;
 		}
-		
+
 		#links {
 			position: relative;
 			width: 38.2%;
 			height: 30px;
 			margin: 0 auto;
+			transition: all 1s;
+		}
+
+		@media all and (max-width:650px) {
+			#links {
+				position: relative;
+				width: 80%;
+				height: 30px;
+				margin: 50% auto;
+			}
 		}
 
 		#links>span {
@@ -38,7 +48,7 @@
 			outline: none;
 			height: 100%;
 			width: 93%;
-			padding: 0 0 0 7%;
+			padding: 0 0 0 9%;
 			border: none;
 			border-radius: 20px;
 			background-color: rgba(100, 100, 100, 0.4);
@@ -66,8 +76,10 @@
 				width: 80%;
 				height: 50%;
 				margin: 6% auto 0 auto;
+				transition: all 2s;
 			}
 		}
+
 		@media all and (max-width:1050px) {
 			ul {
 				display: grid;
@@ -77,6 +89,12 @@
 				width: 80%;
 				height: 50%;
 				margin: 6% auto 0 auto;
+			}
+		}
+
+		@media all and (max-width:650px) {
+			ul {
+				display: none;
 			}
 		}
 
@@ -110,7 +128,7 @@
 	<form id="links" action="https://www.sogou.com/web?" method="get">
 		<span>&#xe63c;</span>
 		<!-- 想要提交表单，要为相应元素设置name属性，控制键的生成。否则无法生成键值对中的键 -->
-		<input type="text" id="search" name="query" placeholder="What do you want...?">
+		<input type="text" id="search" autocomplete="off" name="query" placeholder="What do you want...?">
 	</form>
 	<ul>
 		<li><a href="https://www.google.com/ncr"><img title="google" src="images/google.png"></a></li>
