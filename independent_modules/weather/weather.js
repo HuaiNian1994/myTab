@@ -34,26 +34,39 @@ const myKey = "44278c75f057d42d74789b8e8bc0393c"
 fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
     .then(data => data.json())
     .then(adres => {
+        if (adres.city instanceof Array || !/.*[\u4e00-\u9fa5]+.*$/.test(adres.city)) {
+            return new Promise((resolve,reject)=>{
+                reject("ip定位失败!")
+            });
+        }
         var adCode = null;
         return new Promise((resolve, reject) => {
             fetch("./independent_modules/weather/城市编码.json")//获取表格并查表，从而获取adCode
                 .then(data => data.json())
                 .then(res => {
+                    console.log("表格为：" + res);
+
                     for (let i = 0; i < res.length; i++) {
                         if (res[i]["中文名"] == adres.city) {
                             adCode = res[i].adcode
                             break;
                         }
                     }
+                    if (adCode == null) {
+                        reject("adCode查表失败");
+                    }
                     resolve(adCode);
                 })
         })
     })
-    .then((adCode) => {
+    .then(adCode => {
         fetch(`https://restapi.amap.com/v3/weather/weatherInfo?key=${myKey}&city=${adCode}`)
             .then(data => data.json())
             .then(res => {
-                console.log(res.lives[0].weather);
+                if(res.lives[0].weather instanceof Array || !/.*[\u4e00-\u9fa5]+.*$/.test(adres.city)){
+                    console.log("adCode成功获取，但数据库没有该城市的天气信息");
+                    return;
+                }
                 for (key in WEATHER) {
                     if (WEATHER[key].indexOf(res.lives[0].weather) != -1) {
                         var weatherNode = document.createElement("aside")
@@ -64,6 +77,8 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
                     }
                 }
             })
+    }, error => {
+        console.log(error);
     })
 
 
