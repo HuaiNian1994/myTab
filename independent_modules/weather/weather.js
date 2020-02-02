@@ -44,8 +44,6 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
             fetch("./independent_modules/weather/城市编码.json")//获取表格并查表，从而获取adCode
                 .then(data => data.json())
                 .then(res => {
-                    console.log("表格为：" + res);
-
                     for (let i = 0; i < res.length; i++) {
                         if (res[i]["中文名"] == adres.city) {
                             adCode = res[i].adcode
@@ -71,7 +69,7 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
                     if (WEATHER[key].indexOf(res.lives[0].weather) != -1) {
                         var weatherNode = document.createElement("aside")
                         weatherNode.id = "weather"
-                        weatherNode.innerHTML = `<span id="paint" >${weatherCode[key]}</span><span id="temperature">${res.lives[0].temperature}℃</span><span id="state"> cloudy</span>`
+                        weatherNode.innerHTML = `<span id="paint" >${weatherCode[key]}</span><span id="temperature">${res.lives[0].temperature}℃</span><span id="state"> ${key}</span>`
                         document.getElementsByTagName("body")[0].appendChild(weatherNode)
                         break;
                     }
@@ -80,7 +78,5 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
     }, error => {
         console.log(error);
     })
-
-
 
 

@@ -1,45 +1,53 @@
-@font-face {
-  font-family: 'weather';
-  src: url('iconfont.eot');
-  src: url('iconfont.eot?#iefix') format('embedded-opentype'),
-    url('iconfont.woff2') format('woff2'),
-    url('iconfont.woff') format('woff'),
-    url('iconfont.ttf') format('truetype'),
-    url('iconfont.svg#iconfont') format('svg');
+
+
+#independent {
+  width: 200px;
+  height: 80px;
+  position: absolute;
+  left: 66.6%;
+  top:-45px;
 }
-
-
+#clock {
+  padding: 5px;
+  border-radius: 5px;
+  position: absolute;
+  left: 47%;
+  top: 15%;
+  font: 15px/15px Microsoft Yahei;
+  color: rgba(200, 200, 200, 0.6);
+  background-color: rgba(100, 100, 100, 0.3);
+}
 #weather {
-  position: absolute;
-  left: 70%;
-  top: 4%;
-
-  z-index: 999;
+  width: 100%;
+  height: 100%;
 }
 
-#weather span {
+#weather>span {
   position: absolute;
-  display: inline-block;
-  width: 150px;
   color: rgba(200, 200, 200, 0.6);
 }
 
-#weather #temperature {
+
+#temperature {
   font: 13px/50px Electrolize;
-  left: 35px;
+  left: 50px;
   top: 33px;
 }
 
-#weather #state {
+#state {
   font: 25px/50px Electrolize;
-  left: 95px;
+  left: 82px;
   top: 30px;
 }
 
-#weather #paint {
-  font-family: "weather" !important;
+
+
+#weather #paint {/* 调整选择器优先级，避免被#weather>span覆盖颜色 */
+  font-family: "iconfont" !important;
   font-size: 55px;
   font-style: normal;
+  left: 15px;
+  top:-5px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #fff;
