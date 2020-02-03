@@ -31,6 +31,7 @@ const weatherCode = {
 // 通过高德的API，根据adcode获得天气 信息
 // 根据获得的天气信息进行天气播报
 const myKey = "44278c75f057d42d74789b8e8bc0393c"
+var weatherNode = document.getElementById("weather");
 fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
     .then(data => data.json())
     .then(adres => {
@@ -67,20 +68,39 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
                 }
                 for (key in WEATHER) {
                     if (WEATHER[key].indexOf(res.lives[0].weather) != -1) {
-                        var independentNode=document.getElementById("independent")
-                        independentNode.removeChild(document.getElementById("weather"))
-                        var weatherNode = document.createElement("aside")
-                        weatherNode.id = "weather"
-                        weatherNode.innerHTML = `<span id="paint" >${weatherCode[key]}</span><span id="temperature">${res.lives[0].temperature}℃</span><span id="state"> ${key}</span>`
-                        independentNode.appendChild(weatherNode)
+                        weatherNode.style.opacity = 0;
+                        setTimeout(() => {
+                            weatherNode.children[0].innerHTML = weatherCode[key];
+                            weatherNode.children[1].innerText = res.lives[0].temperature + "℃";
+                            weatherNode.children[2].innerText = key;
+                            weatherNode.style.opacity = 1;
+                        }, 1000);//这是等待节点淡出的时间，1000ms后淡出完毕再设定节点值和透明度。与#weather选择器的属性transition: all 1s;关联
                         break;
                     }
                 }
             })
     }, error => {
         console.log(error);
+        setTimeout(() => {
+            weatherNode.style.opacity = 0;
+            setTimeout(() => {
+                weatherNode.children[0].innerHTML = "&#xe609;";
+                weatherNode.children[1].innerText = "";
+                weatherNode.children[2].innerText = "Failed ☹";
+                weatherNode.style.opacity = 1;
+            }, 1000);
+        }, 5000);
     })
 
 
 
-                        
+// setTimeout(() => {
+//     weatherNode.style.opacity = 0;
+//     setTimeout(() => {
+//         weatherNode.children[0].innerHTML = "&#xe9b2;";
+//         weatherNode.children[1].innerText = "12℃";
+//         weatherNode.children[2].innerText = "misty";
+//         weatherNode.style.opacity = 1;
+//     }, 1000);//与#weather选择器的transition: all 1s;关联
+// }, 2000);
+

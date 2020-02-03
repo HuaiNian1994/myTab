@@ -1,3 +1,6 @@
+#independent{
+  transition: all 1s;
+}
 #clock {
   padding: 5px;
   border-radius: 5px;
@@ -7,11 +10,13 @@
   font: 15px/15px Microsoft Yahei;
   color: rgba(200, 200, 200, 0.6);
   background-color: rgba(100, 100, 100, 0.3);
+  transition: all 1s;
 }
 
 #weather {
   width: 100%;
   height: 100%;
+  transition: all 1s;
 }
 
 #weather>span {
