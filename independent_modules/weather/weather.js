@@ -67,10 +67,12 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
                 }
                 for (key in WEATHER) {
                     if (WEATHER[key].indexOf(res.lives[0].weather) != -1) {
+                        var independentNode=document.getElementById("independent")
+                        independentNode.removeChild(document.getElementById("weather"))
                         var weatherNode = document.createElement("aside")
                         weatherNode.id = "weather"
                         weatherNode.innerHTML = `<span id="paint" >${weatherCode[key]}</span><span id="temperature">${res.lives[0].temperature}℃</span><span id="state"> ${key}</span>`
-                        document.getElementById("independent").appendChild(weatherNode)
+                        independentNode.appendChild(weatherNode)
                         break;
                     }
                 }
@@ -80,3 +82,5 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
     })
 
 
+
+                        
