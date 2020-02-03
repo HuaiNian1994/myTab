@@ -32,6 +32,15 @@ const weatherCode = {
 // 根据获得的天气信息进行天气播报
 const myKey = "44278c75f057d42d74789b8e8bc0393c"
 var weatherNode = document.getElementById("weather");
+function onDOMNodeRemoved_fade(node,changeFunction,time,lowOpacity,highOpacity){
+    lowOpacity=lowOpacity?lowOpacity:0;
+    highOpacity=highOpacity?highOpacity:1;
+    node.style.opacity = lowOpacity;
+    setTimeout(() => {
+        changeFunction();
+        node.style.opacity = highOpacity;
+    },time);//这是等待节点淡出的时间，待淡出完毕后再设定节点值和透明度。应该与节点的CSS属性transition关联使用
+};
 fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
     .then(data => data.json())
     .then(adres => {
@@ -68,13 +77,11 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
                 }
                 for (key in WEATHER) {
                     if (WEATHER[key].indexOf(res.lives[0].weather) != -1) {
-                        weatherNode.style.opacity = 0;
-                        setTimeout(() => {
+                        onDOMNodeRemoved_fade(weatherNode,()=>{
                             weatherNode.children[0].innerHTML = weatherCode[key];
                             weatherNode.children[1].innerText = res.lives[0].temperature + "℃";
                             weatherNode.children[2].innerText = key;
-                            weatherNode.style.opacity = 1;
-                        }, 1000);//这是等待节点淡出的时间，1000ms后淡出完毕再设定节点值和透明度。与#weather选择器的属性transition: all 1s;关联
+                        },1000);
                         break;
                     }
                 }
@@ -82,18 +89,17 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
     }, error => {
         console.log(error);
         setTimeout(() => {
-            weatherNode.style.opacity = 0;
-            setTimeout(() => {
+            onDOMNodeRemoved_fade(weatherNode,()=>{
                 weatherNode.children[0].innerHTML = "&#xe609;";
                 weatherNode.children[1].innerText = "";
                 weatherNode.children[2].innerText = "Failed ☹";
-                weatherNode.style.opacity = 1;
-            }, 1000);
+            },1000);
         }, 5000);
     })
 
 
 
+//需要在节点内容被更改的前一秒改变节点的透明度，但没有适用的事件监听，只能手动
 // setTimeout(() => {
 //     weatherNode.style.opacity = 0;
 //     setTimeout(() => {
