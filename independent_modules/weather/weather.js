@@ -35,7 +35,7 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
     .then(data => data.json())
     .then(adres => {
         if (adres.city instanceof Array || !/.*[\u4e00-\u9fa5]+.*$/.test(adres.city)) {
-            return new Promise((resolve,reject)=>{
+            return new Promise((resolve, reject) => {
                 reject("ip定位失败!")
             });
         }
@@ -61,7 +61,7 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
         fetch(`https://restapi.amap.com/v3/weather/weatherInfo?key=${myKey}&city=${adCode}`)
             .then(data => data.json())
             .then(res => {
-                if(res.lives[0].weather instanceof Array || !/.*[\u4e00-\u9fa5]+.*$/.test(adres.city)){
+                if (res.lives[0].weather instanceof Array || !/.*[\u4e00-\u9fa5]+.*$/.test(adres.city)) {
                     console.log("adCode成功获取，但数据库没有该城市的天气信息");
                     return;
                 }
@@ -70,7 +70,7 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
                         var weatherNode = document.createElement("aside")
                         weatherNode.id = "weather"
                         weatherNode.innerHTML = `<span id="paint" >${weatherCode[key]}</span><span id="temperature">${res.lives[0].temperature}℃</span><span id="state"> ${key}</span>`
-                        document.getElementsByTagName("body")[0].appendChild(weatherNode)
+                        document.getElementById("independent").appendChild(weatherNode)
                         break;
                     }
                 }
