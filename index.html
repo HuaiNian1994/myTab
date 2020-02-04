@@ -164,6 +164,7 @@
 		}
 
 		@media all and (min-width:1050px) {
+
 			/*body不设置高度而设置padding-bottom: 100%;是为了保证ul的百分比宽高等长*/
 			body {
 				position: relative;
@@ -181,8 +182,8 @@
 				height: 30px;
 				/* body高度的10% */
 				/* top:10%; */
-				
-				/* body宽度的10%！！！！！！！！！ */
+
+				/* body宽度的5%！！！！！！！！！ */
 				margin-top: 5%;
 			}
 
@@ -226,20 +227,23 @@
 			#search_father>input:hover::-webkit-input-placeholder {
 				color: black;
 			}
+
 			ul {
 				display: grid;
-				grid-template-columns: repeat(4, 22.75%);/*22.75*3+3*3=100*/
-				grid-auto-rows:14%;/*22.75*0.618=14.0595*/
+				grid-template-columns: repeat(4, 22.75%);
+				/*22.75*3+3*3=100*/
+				grid-auto-rows: 14%;
+				/*22.75*0.618=14.0595*/
 				grid-column-gap: 3%;
 				grid-row-gap: 3%;
 				width: 80%;
 				height: 80%;
 				position: absolute;
-				top:50%;
-				left:50%;
+				top: 50%;
+				left: 50%;
 				transform: translate(-50%, -50%);
-				/*ul自己的12.5%，12.5*2+80=100%*/	
-				/* transform: translateY(15%) translateX(12.5%);		 */
+				/*后者：ul自己的12.5%，12.5*2+80=100%*/
+				/* transform: translateY(15%) translateX(12.5%); */
 				transition: all 2s;
 			}
 
