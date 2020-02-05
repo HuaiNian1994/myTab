@@ -7,400 +7,11 @@
 	<base target="_self"><!-- 所有链接默认在本页面打开 -->
 	<link rel="icon" href="images/myIcon.png">
 	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/main.css">
 	<link rel="stylesheet" href="independent_modules/weather/weather.css">
-	<style>
-		@media all and (max-width:750px) {
-			body {
-				width: 100%;
-				height: 100%;
-				background: url("images/background.jpg") 50% 50%/cover fixed;
-				opacity: 0;
-				transition: all 2s ease;
-
-			}
-
-			header {
-				position: relative;
-				width: 100%;
-				height: 100%;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			}
-
-			#search_father {
-				width: 80%;
-				height: 30px;
-				transition: all 1s;
-				position: relative;
-
-			}
-
-			#search_father>span {
-				font: 25px/30px iconfont;
-				color: rgb(155, 155, 155);
-				font-weight: 700;
-				position: absolute;
-				left: 5px;
-				top: 1px;
-			}
-
-			.engines {
-				position: absolute;
-				display: grid;
-				grid-template-columns: 20px;
-				width: 20px;
-				height: 200px;
-				font-weight: 700;
-				position: absolute;
-				left: 5px;
-				top: 31px;
-			}
-
-			.engines>li {
-				font: 22px/30px iconfont;
-				color: rgb(154, 154, 154);
-			}
-
-			#search_father>input {
-				outline: none;
-				height: 100%;
-				width: 93%;
-				padding: 0 0 0 7%;
-				/*与width关联!*/
-				border: none;
-				border-radius: 20px;
-				background-color: rgba(100, 100, 100, 0.4);
-				font: 16px/30px Electrolize;
-				color: white;
-				transition: all 0.2s
-			}
-
-			#independent {
-				width: 200px;
-				height: 80px;
-				position: absolute;
-				bottom: 19.1%;
-				right: 0;
-			}
-
-			#links {
-				display: none;
-			}
-		}
-
-		@media all and (min-width:750px) and (max-width:1050px) {
-
-			/*下面是三块蒙版*/
-			header::after {
-				content: "";
-				display: block;
-				position: fixed;
-				width: 100%;
-				height: 10%;
-				background: url("images/background.jpg") 50% 50%/cover fixed;
-				-webkit-mask-image: linear-gradient(180deg, #fff, transparent);
-				z-index: 950;
-			}
-
-			header::before {
-				content: "";
-				display: block;
-				position: fixed;
-				width: 100%;
-				height: 10%;
-				/*与header的top:10%相关联*/
-				top: 0;
-				background: url("images/background.jpg") 50% 50%/cover fixed;
-				z-index: 950;
-			}
-
-			body::before {
-				content: "";
-				display: block;
-				position: fixed;
-				width: 100%;
-				height: 20%;
-				bottom: 0;
-				background: url("images/background.jpg") 50% 50%/cover fixed;
-				-webkit-mask-image: linear-gradient(0deg, #fff, transparent);
-				z-index: 950;
-			}
-
-			body {
-				width: 100%;
-				padding-bottom: 100%;
-				background: url("images/background.jpg") 50% 50%/cover fixed;
-				opacity: 0;
-				transition: opacity 2s ease;
-				overflow: scroll;
-				position: relative;
-			}
-
-			header {
-				position: fixed;
-				/*body高度的10%*/
-				top: 10%;
-				left: 6.18%;
-				width: 100%;
-				background: url("images/background.jpg") 50% 50%/cover fixed;
-				z-index: 1000;
-			}
-
-			#search_father {
-				width: 61%;
-				margin-left: 5%;
-				position: relative;
-				height: 30px;
-				transition: all 1s;
-				z-index: 1100;
-			}
-
-			#search_father>span {
-				font: 25px/30px iconfont;
-				color: rgb(155, 155, 155);
-				font-weight: 700;
-				position: absolute;
-				left: 5px;
-				top: 1px;
-			}
-
-			.engines {
-				position: absolute;
-				display: grid;
-				grid-template-columns: 20px;
-				width: 20px;
-				height: 200px;
-				font-weight: 700;
-				position: absolute;
-				left: 5px;
-				top: 31px;
-			}
-
-			.engines>li {
-				font: 22px/30px iconfont;
-				color: rgb(154, 154, 154);
-			}
-
-			#search_father>input {
-				outline: none;
-				height: 100%;
-				width: 93%;
-				padding: 0 0 0 7%;
-				border: none;
-				border-radius: 20px;
-				background-color: rgba(100, 100, 100, 0.4);
-				font: 16px/30px Electrolize;
-				color: white;
-				transition: all 0.2s
-			}
-
-			#independent {
-				width: 200px;
-				height: 80px;
-				position: fixed;
-				bottom: 61.8%;
-				left: 6.18%;
-				z-index: 1200;
-			}
-
-			#links {
-				display: grid;
-				grid-template-columns: repeat(2, 47.5%);
-				grid-auto-rows: 29%;
-				grid-column-gap: 5%;
-				grid-row-gap: 5%;
-				width: 61.8%;
-				height: 61.8%;
-				position: absolute;
-				left: 61.8%;
-				top: 50%;
-				transform: translate(-50%, -50%);
-			}
-
-			#links>li {
-				border: none;
-				width: 100%;
-				height: 100%;
-			}
-
-			#links>li a {
-				display: inline-block;
-				width: 100%;
-				height: 100%;
-				opacity: 0.8;
-				transition: all 0.2s;
-				border-radius: 10px;
-			}
-
-			#links>li a:hover {
-				opacity: 1;
-				transform: translateY(-1px);
-				box-shadow: 3px 2px 10px 2px rgba(200, 200, 200, 0.4), -3px 2px 10px 2px rgba(200, 200, 200, 0.4);
-			}
-		}
-
-		@media all and (min-width:1050px) {
-
-			/*body不设置高度而设置padding-bottom: 100%;以及设置position: relative;是为了保证ul的百分比宽高等长*/
-			body {
-				position: relative;
-				width: 100%;
-				background: url("images/background.jpg") 50% 50%/cover fixed;
-				/* opacity: 0; */
-				transition: opacity 2s ease;
-				padding-bottom: 100%;
-				overflow: hidden;
-			}
-
-			header {
-				position: absolute;
-				width: 100%;
-				height: 30px;
-				/* body高度的10% */
-				/* top:10%; */
-
-				/* body宽度的5%！！！！！！！！！ */
-				margin-top: 5%;
-			}
-
-			#search_father {
-				position: relative;
-				width: 38.2%;
-				height: 30px;
-				margin: 0 auto;
-				transition: all 1s;
-			}
-
-
-
-			#search_father>span {
-				font: 25px/30px iconfont;
-				color: rgb(155, 155, 155);
-				position: absolute;
-				top: 1px;
-				left: 8px;
-				font-weight: 700;
-			}
-
-			.engines {
-				position: absolute;
-				display: grid;
-				grid-template-columns: repeat(9,22px);
-				grid-column-gap:10px;
-				height: 30px;
-				font-weight: 700;
-				position: absolute;
-				left: 0px;
-				top: 30px;
-				background-color: rgba(100, 100, 100, 0.4);
-				padding: 0 11px;
-				border-radius: 0 0 20px 20px;
-				animation:myFade 1s ease 0 1 forwards;
-
-			}
-
-			.engines>li {
-				font: 22px/30px iconfont;
-				border-radius: 50%;
-				color: white;
-				
-				
-			}
-			@keyframes myFade{
-				0%{
-					opacity:0;
-					height: 0;
-				}
-				100%{
-					opacity: 1;
-					height: 30px;
-				}
-			}
-			.engines>li:hover{
-				color: rgb(114, 114, 114);
-				cursor: pointer;
-				
-			}
-
-			#search_father>input {
-				outline: none;
-				height: 100%;
-				width: 93%;
-				padding: 0 0 0 9%;
-				border: none;
-				border-radius: 20px;
-				background-color: rgba(100, 100, 100, 0.4);
-				font: 16px/30px Electrolize;
-				color: white;
-				transition: all 0.2s
-			}
-
-			#search_father>input:hover {
-				background-color: rgba(200, 200, 200, 0.4);
-				box-shadow: 0px 0px 10px 2px rgba(200, 200, 200, 0.4);
-			}
-
-			#search_father>input:hover::-webkit-input-placeholder {
-				color: black;
-			}
-
-			#links {
-				display: grid;
-				grid-template-columns: repeat(4, 22.75%);
-				/*22.75*3+3*3=100*/
-				grid-auto-rows: 14%;
-				/*22.75*0.618=14.0595*/
-				grid-column-gap: 3%;
-				grid-row-gap: 3%;
-				width: 80%;
-				height: 80%;
-				position: absolute;
-				top: 52.5%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-				/*后者：ul自己的12.5%，12.5*2+80=100%
-				/* transform: translateY(15%) translateX(12.5%); */
-				/* transition: all 2s; */
-			}
-
-			#links>li {
-				border: none;
-				width: 100%;
-				height: 100%;
-			}
-
-			#links>li>a {
-				display: inline-block;
-				width: 100%;
-				height: 100%;
-				opacity: 0.8;
-				transition: all 0.2s
-			}
-
-			#links>li a:hover {
-				opacity: 1;
-				transform: translateY(-1px);
-				box-shadow: 3px 2px 10px 2px rgba(200, 200, 200, 0.4), -3px 2px 10px 2px rgba(200, 200, 200, 0.4);
-
-			}
-
-			#independent {
-				width: 200px;
-				height: 80px;
-				position: absolute;
-				left: 66.6%;
-				top: -45px;
-			}
-		}
-
-
-		/******************************************公共属性**********************************************/
-	</style>
 </head>
 
-<body>
-
+<body style="opacity: 0">
 	<header>
 		<aside id="independent">
 			<span id="clock"></span>
@@ -410,11 +21,11 @@
 				<span id="state"> Loading...</span>
 			</aside>
 		</aside>
-		<form id="search_father" action="https://www.sogou.com/web?" method="get">
-			<span>&#xe63c;</span>
+		<form id="search_father" action="https://www.google.com/search?" method="get">
+			<span>&#xe8f0;</span>
 			<ul class="engines"></ul>
 			<!-- 想要提交表单，要为相应元素设置name属性，控制键的生成。否则无法生成键值对中的键 -->
-			<input type="text" id="search" autocomplete="off" name="query" placeholder="What do you want...?">
+			<input type="text" id="search" autocomplete="off" name="q" placeholder="What do you want...?">
 		</form>
 	</header>
 
@@ -442,13 +53,13 @@
 	}
 	const engineList = {
 		Bing: "&#xe9ac;",
-		Yahoo: "&#xeb49;",
+		Yahoo: "&#xe61a;",
 		baidu: "&#xe6b6;",
 		github: "&#xe709;",
 		google: "&#xe8f0;",
 		wikipedia: "&#xe673;",
 		sogou: "&#xe8c9;",
-		mozilla: "&#xe600;",
+		mozilla: "&#xeccf;",
 		duckduckgo: "&#xe62e;"
 	}
 	const searchLinks = {
@@ -490,16 +101,56 @@
 		}
 	}
 	var enginesNode = document.getElementsByClassName("engines")[0];
+	var search_fatherNode = document.getElementById("search_father");
+	//创建节点
 	for (key in engineList) {
 		var node = document.createElement("li");
 		node.setAttribute("engineName", key)
 		node.innerHTML = engineList[key]
 		node.className = "enginePic"
-		// node.onclick=()=>{
 		enginesNode.appendChild(node);
-		// }
 	}
-	enginesNode.style.display="none";
+
+	//设定动画效果
+	var glass = search_fatherNode.children[0];
+	var timer = null;
+	glass.onmouseover = () => {
+		glass.style.color = "white";
+	}
+	glass.onclick = () => {
+		enginesNode.style.opacity = 1;
+		enginesNode.style.transform = "scaleX(1)";
+	}
+	glass.onmouseout = () => {
+		glass.style.color = "rgb(155, 155, 155)";
+		timer = setTimeout(() => {
+			enginesNode.style.opacity = 0;
+			enginesNode.style.transform = "scaleX(0)";
+		}, 500);
+	}
+	enginesNode.onmouseover = () => {
+		clearTimeout(timer);
+		enginesNode.style.opacity = 1;
+		enginesNode.style.transform = "scaleX(1)";
+		glass.style.color = "white";
+	}
+	enginesNode.onmouseout = () => {
+		glass.style.color = "rgb(155, 155, 155)";
+		timer = setTimeout(() => {
+			enginesNode.style.opacity = 0;
+			enginesNode.style.transform = "scaleX(0)";
+		}, 500);
+	}
+
+	//事件委托
+	enginesNode.onclick = (e) => {
+		if (e.target.className=="enginePic") {
+			var engineName = e.target.getAttribute("enginename");
+			search_fatherNode.action = searchLinks[engineName].link;
+			glass.innerHTML = engineList[engineName]
+			search_fatherNode.children[2].name = searchLinks[engineName].query;
+		}
+	}
 </script>
 <script src="independent_modules/clock/clock.js"></script>
 <script src="independent_modules/weather/weather.js"></script>

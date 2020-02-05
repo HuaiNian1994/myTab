@@ -64,6 +64,9 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
                         reject("adCode查表失败");
                     }
                     resolve(adCode);
+                }).catch(err=>{
+                    //其他异常
+                    reject("adCode查表失败");
                 })
         })
     })
