@@ -47,10 +47,6 @@
 
 </body>
 <script>
-	//加载时页面淡入
-	window.onload = () => {
-		document.getElementsByTagName("body")[0].style.opacity = 1;
-	}
 	const engineList = {
 		Bing: "&#xe9ac;",
 		Yahoo: "&#xe61a;",
@@ -149,7 +145,22 @@
 			search_fatherNode.action = searchLinks[engineName].link;
 			glass.innerHTML = engineList[engineName]
 			search_fatherNode.children[2].name = searchLinks[engineName].query;
+			localStorage.setItem("selectedEngineName",engineName)
 		}
+	}
+
+	
+	
+	window.onload = () => {
+		//加载时页面淡入
+		document.getElementsByTagName("body")[0].style.opacity = 1;
+		//记录搜索引擎选择历史
+		var enginename=null;
+		if(enginename=localStorage.getItem("selectedEngineName")){
+			search_fatherNode.action = searchLinks[enginename].link;
+			glass.innerHTML = engineList[enginename]
+			search_fatherNode.children[2].name = searchLinks[enginename].query;
+		}	
 	}
 </script>
 <script src="independent_modules/clock/clock.js"></script>
