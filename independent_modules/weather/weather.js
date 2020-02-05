@@ -71,7 +71,7 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
         fetch(`https://restapi.amap.com/v3/weather/weatherInfo?key=${myKey}&city=${adCode}`)
             .then(data => data.json())
             .then(res => {
-                if (res.lives[0].weather instanceof Array || !/.*[\u4e00-\u9fa5]+.*$/.test(adres.city)) {
+                if (res.lives[0].weather instanceof Array || !/.*[\u4e00-\u9fa5]+.*$/.test(res.lives[0].weather)) {
                     console.log("adCode成功获取，但数据库没有该城市的天气信息");
                     return;
                 }
