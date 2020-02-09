@@ -31,7 +31,8 @@
 	</header>
 
 	<ul id="links">
-		<li><a href="https://www.google.com/ncr" style="background:url('images/google.png') 50% 50%/cover;"></a>
+		<li><a href="https://www.google.com/ncr" style="background:url('images/google.png') 50% 50%/cover;">
+			</a>
 		</li>
 		<li><a href="https://github.com/" style="background:url('images/github.png') 50% 50%/cover;"></a></li>
 		<li><a href="http://www.w3school.com.cn/" style="background:url('images/w3school.png') 50% 50%/cover;"></a></li>
@@ -42,8 +43,8 @@
 				style="background:url('images/wechat public platform.png') 50% 50%/cover;"></a></li>
 		<li><a href="https://leetcode-cn.com/" style="background:url('images/LeetCode.png') 50% 50%/cover;"></a></li>
 		<li><a href="https://www.baidu.com" style="background:url('images/baidu.png') 50% 50%/cover;"></a></li>
-		
-		
+
+
 	</ul>
 
 
@@ -142,27 +143,118 @@
 
 	//事件委托
 	enginesNode.onclick = (e) => {
-		if (e.target.className=="enginePic") {
+		if (e.target.className == "enginePic") {
 			var engineName = e.target.getAttribute("enginename");
 			search_fatherNode.action = searchLinks[engineName].link;
 			glass.innerHTML = engineList[engineName]
 			search_fatherNode.children[2].name = searchLinks[engineName].query;
-			localStorage.setItem("selectedEngineName",engineName)
+			localStorage.setItem("selectedEngineName", engineName)
 		}
 	}
 
-	
-	
+
+
 	window.onload = () => {
 		//加载时页面淡入
 		document.getElementsByTagName("body")[0].style.opacity = 1;
 		//记录搜索引擎选择历史
-		var enginename=null;
-		if(enginename=localStorage.getItem("selectedEngineName")){
+		var enginename = null;
+		if (enginename = localStorage.getItem("selectedEngineName")) {
 			search_fatherNode.action = searchLinks[enginename].link;
 			glass.innerHTML = engineList[enginename]
 			search_fatherNode.children[2].name = searchLinks[enginename].query;
-		}	
+		}
+	}
+	var setLinkTimer = [];
+	var haveLinkMask = [];
+	var linksNode = document.getElementById("links");//customLink
+	var aNodes=linksNode.getElementsByTagName("a");
+	var lastHoverA = null;
+	for (let i = 0; i < linksNode.children.length; i++) {
+		aNodes[i].className="customLink";
+		setLinkTimer.push(null);
+		haveLinkMask.push(false);
+		linksNode.children[i].children[0].setAttribute("index", i);
+	}
+	var removeNode = aim => {
+		aim.parentNode.removeChild(aim);
+	}
+	var createSettingNode = father => { //创建设置选项
+		var setLinkNode = document.createElement("span");
+		setLinkNode.className = "setLink"
+		setLinkNode.innerHTML = "&#xe645;"
+		father.appendChild(setLinkNode);
+	}
+	linksNode.onmouseover = (e) => {
+		if (e.target.tagName == "A") {
+			if (e.target.children[0] === undefined) {
+				createSettingNode(e.target);
+			}
+			if (e.target == lastHoverA) { //继续显示setLink按钮
+				clearInterval(setLinkTimer[parseInt(e.target.getAttribute("index"))]);
+			} else {
+				lastHoverA = e.target;
+			}
+			e.target.children[0].style.cssText = "transform:scale(1)";
+			console.log("set");
+
+		}
+		if (e.target.className == "setLink") { //继续显示setLink按钮
+			var index = parseInt(e.target.parentNode.getAttribute("index"));
+			clearInterval(setLinkTimer[index]);
+		}
+	}
+
+
+	linksNode.onmouseout = (e) => {
+		if (e.target.tagName == "A" ) {
+			setLinkTimer[parseInt(e.target.getAttribute("index"))] = setTimeout(() => {
+				e.target.children[0].style.cssText = "transform:scale(0)"
+			}, 200);
+		}
+		if (e.target.className == "setLink") {
+			e.target.style.cssText = "transform:scale(0)"
+		}
+	}
+	
+	
+	linksNode.onclick = (e) => {
+		if (e.target.className == "setLink") { //设置按钮
+			e.preventDefault();
+			if (!haveLinkMask[parseInt(e.target.parentNode.getAttribute("index"))]) {
+				var linkMask = document.createElement("div");
+				linkMask.className = "linkMask"
+				linkMask.innerHTML =
+					"<div><label>Name</label><input></input></div><div><label>URL</label><input placeholder=\"Begin with 'https://'\"></input></div><div><aside class=\"quit\">&#xe6c9;</aside><aside class=\"clear\">&#xe70a;</aside><aside class=\"done\">&#xe7b7;</aside></div>";
+				e.target.parentNode.parentNode.appendChild(linkMask);
+				haveLinkMask[parseInt(e.target.parentNode.getAttribute("index"))] = true;
+				setTimeout(() => {
+					e.target.parentNode.parentNode.getElementsByClassName("linkMask")[0].style.opacity = 1;
+				}, 100);
+			}
+		} else if (e.target.tagName == "ASIDE") {
+			var thisLinkMask = e.target.parentNode.parentNode;
+			var thisLinkMask_Name = thisLinkMask.children[0].children[1];
+			var thisLinkMask_URL = thisLinkMask.children[1].children[1];
+
+			if (e.target.className == "clear") { //清空按钮
+				thisLinkMask_URL.value = "";
+				thisLinkMask_Name.value = "";
+			} else if (e.target.className == "done") { //完成按钮
+				if (thisLinkMask_URL.value.replace(/\s/gi, "") != "" && thisLinkMask_Name.value.replace(/\s/gi, "") !=
+					"") { //如果输入不为空
+					thisLinkMask.parentNode.children[0].innerHTML = thisLinkMask_Name.value;
+					thisLinkMask.parentNode.children[0].style.cssText = "background-color:rgba(255,255,255,0.8)";
+					thisLinkMask.parentNode.children[0].setAttribute("href", thisLinkMask_URL.value);
+					haveLinkMask[parseInt(thisLinkMask.parentNode.children[0].getAttribute("index"))]=false;
+					thisLinkMask.parentNode.removeChild(thisLinkMask);
+				}
+			} else if (e.target.className == "quit") { //退出按钮
+				haveLinkMask[parseInt(thisLinkMask.parentNode.children[0].getAttribute("index"))]=false;
+				thisLinkMask.parentNode.removeChild(thisLinkMask);
+			}
+
+		}
 	}
 </script>
 <script src="independent_modules/clock/clock.js"></script>

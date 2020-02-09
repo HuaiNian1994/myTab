@@ -1,404 +1,497 @@
 		@media all and (max-width:750px) {
-		    body {
-		        width: 100%;
-		        height: 100%;
-		        background: url("../images/background.jpg") 50% 50%/cover fixed;
-		        transition: all 2s ease;
-		    }
+			body {
+				width: 100%;
+				height: 100%;
+				background: url("../images/background.jpg") 50% 50%/cover fixed;
+				transition: all 2s ease;
+			}
 
-		    header {
-		        position: relative;
-		        width: 100%;
-		        height: 100%;
-		        display: flex;
-		        justify-content: center;
-		        align-items: center;
-		    }
+			header {
+				position: relative;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
 
-		    #search_father {
-		        width: 80%;
-		        height: 30px;
-		        transition: all 1s;
-		        position: relative;
+			#search_father {
+				width: 80%;
+				height: 30px;
+				transition: all 1s;
+				position: relative;
 
-		    }
+			}
 
-		    #search_father>span {
-		        font: 22px/22px iconfont;
-		        /*与父元素30px的高度关联：30=4*2+22*/
-		        color: rgb(155, 155, 155);
-		        position: absolute;
-		        top: 50%;
-		        margin-top: -15px;
-		        /*15=（4*2+22）/2*/
-		        margin-left: 5px;
-		        padding: 4px;
-		        /*与父元素30px的高度关联：30=4*2+22*/
-		        transition: all 1s ease;
-		        cursor: pointer;
-		    }
+			#search_father>span {
+				font: 22px/22px iconfont;
+				/*与父元素30px的高度关联：30=4*2+22*/
+				color: rgb(155, 155, 155);
+				position: absolute;
+				top: 50%;
+				margin-top: -15px;
+				/*15=（4*2+22）/2*/
+				margin-left: 5px;
+				padding: 4px;
+				/*与父元素30px的高度关联：30=4*2+22*/
+				transition: all 1s ease;
+				cursor: pointer;
+			}
 
 
-		    .engines {
-		        position: absolute;
-		        display: grid;
-		        grid-template-columns: repeat(9, 22px);
-		        grid-column-gap: 10px;
-		        height: 30px;
-		        font-weight: 700;
-		        position: absolute;
-		        left: 0px;
-		        top: 45px;
-		        background-color: rgba(100, 100, 100, 0.4);
-		        padding: 0 11px;
-		        border-radius: 20px;
-		        transform: scaleX(0) ;
-		        transition: all 500ms ease;
-				z-index:10000;
+			.engines {
+				position: absolute;
+				display: grid;
+				grid-template-columns: repeat(9, 22px);
+				grid-column-gap: 10px;
+				height: 30px;
+				font-weight: 700;
+				position: absolute;
+				left: 0px;
+				top: 45px;
+				background-color: rgba(100, 100, 100, 0.4);
+				padding: 0 11px;
+				border-radius: 20px;
+				transform: scaleX(0);
+				transition: all 500ms ease;
+				z-index: 10000;
 
-		    }
+			}
 
-		    .engines>li {
-		        font: 22px/30px iconfont;
-		        color: white;
-		    }
+			.engines>li {
+				font: 22px/30px iconfont;
+				color: white;
+			}
 
-		    .engines>li:hover {
-		        color: rgb(114, 114, 114);
-		        cursor: pointer;
-		    }
+			.engines>li:hover {
+				color: rgb(114, 114, 114);
+				cursor: pointer;
+			}
 
-		    #search_father>input {
-		        outline: none;
-		        height: 100%;
-		        width: 88%;
-		        padding: 0 0 0 12%;
-		        /*与width关联!*/
-		        border: none;
-		        border-radius: 20px;
-		        background-color: rgba(100, 100, 100, 0.4);
-		        font: 16px/30px Electrolize;
-		        color: white;
-		        transition: all 0.2s
-		    }
+			#search_father>input {
+				outline: none;
+				height: 100%;
+				width: 88%;
+				padding: 0 0 0 12%;
+				/*与width关联!*/
+				border: none;
+				border-radius: 20px;
+				background-color: rgba(100, 100, 100, 0.4);
+				font: 16px/30px Electrolize;
+				color: white;
+				transition: all 0.2s
+			}
 
-		    #independent {
-		        width: 200px;
-		        height: 80px;
-		        position: absolute;
-		        bottom: 19.1%;
-		        right: 0;
-		    }
+			#independent {
+				width: 200px;
+				height: 80px;
+				position: absolute;
+				bottom: 19.1%;
+				right: 0;
+			}
 
-		    #links {
-		        display: none;
-		    }
+			#links {
+				display: none;
+			}
 		}
 
 		@media all and (min-width:750px) and (max-width:1050px) {
 
-		    /*下面是三块蒙版*/
-		    header::after {
-		        content: "";
-		        display: block;
-		        position: fixed;
-		        width: 100%;
-		        height: 10%;
-		        background: url("../images/background.jpg") 50% 50%/cover fixed;
-		        -webkit-mask-image: linear-gradient(180deg, #fff, transparent);
-		        z-index: 950;
-		    }
+			/*下面是三块蒙版*/
+			header::after {
+				content: "";
+				display: block;
+				position: fixed;
+				width: 100%;
+				height: 10%;
+				background: url("../images/background.jpg") 50% 50%/cover fixed;
+				-webkit-mask-image: linear-gradient(180deg, #fff, transparent);
+				z-index: 950;
+			}
 
-		    header::before {
-		        content: "";
-		        display: block;
-		        position: fixed;
-		        width: 100%;
-		        height: 10%;
-		        /*与header的top:10%相关联*/
-		        top: 0;
-		        background: url("../images/background.jpg") 50% 50%/cover fixed;
-		        z-index: 950;
-		    }
+			header::before {
+				content: "";
+				display: block;
+				position: fixed;
+				width: 100%;
+				height: 10%;
+				/*与header的top:10%相关联*/
+				top: 0;
+				background: url("../images/background.jpg") 50% 50%/cover fixed;
+				z-index: 950;
+			}
 
-		    body::before {
-		        content: "";
-		        display: block;
-		        position: fixed;
-		        width: 100%;
-		        height: 20%;
-		        bottom: 0;
-		        background: url("../images/background.jpg") 50% 50%/cover fixed;
-		        -webkit-mask-image: linear-gradient(0deg, #fff, transparent);
-		        z-index: 950;
-		    }
+			body::before {
+				content: "";
+				display: block;
+				position: fixed;
+				width: 100%;
+				height: 20%;
+				bottom: 0;
+				background: url("../images/background.jpg") 50% 50%/cover fixed;
+				-webkit-mask-image: linear-gradient(0deg, #fff, transparent);
+				z-index: 950;
+			}
 
-		    body {
-		        width: 100%;
+			body {
+				width: 100%;
 				height: 100%;
-		        background: url("../images/background.jpg") 50% 50%/cover fixed;
-		        transition: opacity 2s ease;
-		        overflow: scroll;
-		        position: relative;
-		    }
+				background: url("../images/background.jpg") 50% 50%/cover fixed;
+				transition: opacity 2s ease;
+				overflow: scroll;
+				position: relative;
+			}
 
-		    header {
-		        position: fixed;
-		        /*body高度的10%*/
-		        top: 10%;
-		        width: 100%;
-		        background: url("../images/background.jpg") 50% 50%/cover fixed;
-		        z-index: 1000;
-		    }
+			header {
+				position: fixed;
+				/*body高度的10%*/
+				top: 10%;
+				width: 100%;
+				background: url("../images/background.jpg") 50% 50%/cover fixed;
+				z-index: 1000;
+			}
 
-		    #search_father {
-		        width: 61%;
-		        margin-left: 6.18%;
-		        position: relative;
-		        height: 30px;
-		        transition: all 1s;
-		        z-index: 1100;
-		    }
+			#search_father {
+				width: 61%;
+				margin-left: 6.18%;
+				position: relative;
+				height: 30px;
+				transition: all 1s;
+				z-index: 1100;
+			}
 
-		    #search_father>span {
-		        font: 22px/22px iconfont;
-		        /*与父元素30px的高度关联：30=4*2+22*/
-		        color: rgb(155, 155, 155);
-		        position: absolute;
-		        top: 50%;
-		        margin-top: -15px;
-		        /*15=（4*2+22）/2*/
-		        margin-left: 5px;
-		        padding: 4px;
-		        /*与父元素30px的高度关联：30=4*2+22*/
-		        transition: all 1s ease;
-		        cursor: pointer;
-		    }
+			#search_father>span {
+				font: 22px/22px iconfont;
+				/*与父元素30px的高度关联：30=4*2+22*/
+				color: rgb(155, 155, 155);
+				position: absolute;
+				top: 50%;
+				margin-top: -15px;
+				/*15=（4*2+22）/2*/
+				margin-left: 5px;
+				padding: 4px;
+				/*与父元素30px的高度关联：30=4*2+22*/
+				transition: all 1s ease;
+				cursor: pointer;
+			}
 
 
-		    .engines {
-		        position: absolute;
-		        display: grid;
-		        grid-template-columns: repeat(9, 22px);
-		        grid-column-gap: 10px;
-		        height: 30px;
-		        font-weight: 700;
-		        position: absolute;
-		        left: 0px;
-		        top: 45px;
-		        background-color: rgba(100, 100, 100, 0.4);
-		        padding: 0 11px;
-		        border-radius: 20px;
-		        transform: scaleX(0) ;
-		        transition: all 500ms ease;
-				z-index:10000;
+			.engines {
+				position: absolute;
+				display: grid;
+				grid-template-columns: repeat(9, 22px);
+				grid-column-gap: 10px;
+				height: 30px;
+				font-weight: 700;
+				position: absolute;
+				left: 0px;
+				top: 45px;
+				background-color: rgba(100, 100, 100, 0.4);
+				padding: 0 11px;
+				border-radius: 20px;
+				transform: scaleX(0);
+				transition: all 500ms ease;
+				z-index: 10000;
 
-		    }
+			}
 
-		    .engines>li {
-		        font: 22px/30px iconfont;
-		        color: white;
-		    }
+			.engines>li {
+				font: 22px/30px iconfont;
+				color: white;
+			}
 
-		    .engines>li:hover {
-		        color: rgb(114, 114, 114);
-		        cursor: pointer;
-		    }
+			.engines>li:hover {
+				color: rgb(114, 114, 114);
+				cursor: pointer;
+			}
 
-		    #search_father>input {
-		        outline: none;
-		        height: 100%;
-		        width: 93%;
-		        padding: 0 0 0 7%;
-		        border: none;
-		        border-radius: 20px;
-		        background-color: rgba(100, 100, 100, 0.4);
-		        font: 16px/30px Electrolize;
-		        color: white;
-		        transition: all 0.2s
-		    }
+			#search_father>input {
+				outline: none;
+				height: 100%;
+				width: 93%;
+				padding: 0 0 0 7%;
+				border: none;
+				border-radius: 20px;
+				background-color: rgba(100, 100, 100, 0.4);
+				font: 16px/30px Electrolize;
+				color: white;
+				transition: all 0.2s
+			}
 
-		    #independent {
-		        width: 200px;
-		        height: 80px;
-		        position: fixed;
-		        top: 48.2vh;
-		        left: 3vw;
-		        z-index: 1200;
-		    }
+			#independent {
+				width: 200px;
+				height: 80px;
+				position: fixed;
+				top: 48.2vh;
+				left: 3vw;
+				z-index: 1200;
+			}
 
-		    #links {
-		        display: grid;
-		        grid-template-columns: repeat(2, 29.35vw);
-		        grid-auto-rows: 18.13vw;
-		        grid-column-gap: 3vw;
-		        grid-row-gap: 3vw;
-		        position: absolute;
-		        right:5vw;
-		        top: 25vh;/*同两块蒙版与header高度的和相关联*/
-		    }
+			#links {
+				display: grid;
+				grid-template-columns: repeat(2, 29.35vw);
+				grid-auto-rows: 18.13vw;
+				grid-column-gap: 3vw;
+				grid-row-gap: 3vw;
+				position: absolute;
+				right: 5vw;
+				top: 25vh;
+				/*同两块蒙版与header高度的和相关联*/
+			}
 
-		    #links>li {
-		        border: none;
-		        width: 100%;
-		        height: 100%;
-		    }
+			#links>li {
+				border: none;
+				width: 100%;
+				height: 100%;
+			}
 
-		    #links>li a {
-		        display: inline-block;
-		        width: 100%;
-		        height: 100%;
-		        opacity: 0.8;
-		        transition: all 0.2s;
-		        border-radius: 10px;
-		    }
+			#links>li a {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+				height: 100%;
+				opacity: 0.8;
+				transition: all 0.2s;
+				border-radius: 10px;
+			}
 
-		    #links>li a:hover {
-		        opacity: 1;
-		        transform: translateY(-1px);
-		        box-shadow: 3px 2px 10px 2px rgba(200, 200, 200, 0.4), -3px 2px 10px 2px rgba(200, 200, 200, 0.4);
-		    }
+			#links>li a:hover {
+				opacity: 1;
+				transform: translateY(-1px);
+				box-shadow: 3px 2px 10px 2px rgba(200, 200, 200, 0.4), -3px 2px 10px 2px rgba(200, 200, 200, 0.4);
+			}
 		}
 
 		@media all and (min-width:1050px) {
 
-		    /*body不设置高度而设置padding-bottom: 100%;以及设置position: relative;是为了保证ul的百分比宽高等长*/
-		    body {
-		        position: relative;
-		        width: 100%;
-		        background: url("../images/background.jpg") 50% 50%/cover fixed;
-		        transition: opacity 2s ease;
-		        height: 100%;
-				z-index:-999;
-		    }
+			/*body不设置高度而设置padding-bottom: 100%;以及设置position: relative;是为了保证ul的百分比宽高等长*/
+			body {
+				position: relative;
+				width: 100%;
+				background: url("../images/background.jpg") 50% 50%/cover fixed;
+				transition: opacity 2s ease;
+				height: 100%;
+				z-index: -999;
+			}
 
-		    header {
-		        position: absolute;
-		        width: 100%;
-		        height: 30px;
-		        /* body高度的10% */
-		        /* top:10%; */
+			header {
+				position: absolute;
+				width: 100%;
+				height: 30px;
+				/* body高度的10% */
+				/* top:10%; */
 
-		        /* body宽度的5%！！！！！！！！！ */
-		        margin-top: 5%;
-		    }
+				/* body宽度的5%！！！！！！！！！ */
+				margin-top: 5%;
+			}
 
-		    #search_father {
-		        position: relative;
-		        width: 38.2%;
-		        height: 30px;
-		        margin: 0 auto;
-		        transition: all 1s;
-		    }
-
-
-
-		    #search_father>span {
-		        font: 22px/22px iconfont;
-		        /*与父元素30px的高度关联：30=4*2+22*/
-		        color: rgb(155, 155, 155);
-		        position: absolute;
-		        top: 50%;
-		        margin-top: -15px;
-		        /*15=（4*2+22）/2*/
-		        margin-left: 5px;
-		        padding: 4px;
-		        /*与父元素30px的高度关联：30=4*2+22*/
-		        transition: all 1s ease;
-		        cursor: pointer;
-		    }
+			#search_father {
+				position: relative;
+				width: 38.2%;
+				height: 30px;
+				margin: 0 auto;
+				transition: all 1s;
+			}
 
 
-		    .engines {
-		        position: absolute;
-		        display: grid;
-		        grid-template-columns: repeat(9, 22px);
-		        grid-column-gap: 10px;
-		        height: 30px;
-		        font-weight: 700;
-		        position: absolute;
-		        left: 0px;
-		        top: 45px;
-		        background-color: rgba(100, 100, 100, 0.4);
-		        padding: 0 11px;
-		        border-radius: 20px;
-				transform: scaleX(0) ;
-		        transition: all 500ms ease;
-				z-index:10000;
-		    }
 
-		    .engines>li {
-		        font: 22px/30px iconfont;
-		        border-radius: 50%;
-		        color: white;
-		    }
+			#search_father>span {
+				font: 22px/22px iconfont;
+				/*与父元素30px的高度关联：30=4*2+22*/
+				color: rgb(155, 155, 155);
+				position: absolute;
+				top: 50%;
+				margin-top: -15px;
+				/*15=（4*2+22）/2*/
+				margin-left: 5px;
+				padding: 4px;
+				/*与父元素30px的高度关联：30=4*2+22*/
+				transition: all 1s ease;
+				cursor: pointer;
+			}
 
-		    .engines>li:hover {
-		        color: rgb(114, 114, 114);
-		        cursor: pointer;
-		    }
 
-		    #search_father>input {
-		        outline: none;
-		        height: 100%;
-		        width: 93%;
-		        padding: 0 0 0 9%;
-		        border: none;
-		        border-radius: 20px;
-		        background-color: rgba(100, 100, 100, 0.4);
-		        font: 16px/30px Electrolize;
-		        color: white;
-		        transition: all 0.2s
-		    }
+			.engines {
+				position: absolute;
+				display: grid;
+				grid-template-columns: repeat(9, 22px);
+				grid-column-gap: 10px;
+				height: 30px;
+				font-weight: 700;
+				position: absolute;
+				left: 0px;
+				top: 45px;
+				background-color: rgba(100, 100, 100, 0.4);
+				padding: 0 11px;
+				border-radius: 20px;
+				transform: scaleX(0);
+				transition: all 500ms ease;
+				z-index: 10000;
+			}
 
-		    #search_father>input:hover {
-		        background-color: rgba(200, 200, 200, 0.4);
-		        box-shadow: 0px 0px 10px 2px rgba(200, 200, 200, 0.4);
-		    }
+			.engines>li {
+				font: 22px/30px iconfont;
+				border-radius: 50%;
+				color: white;
+			}
 
-		    #search_father>input:hover::-webkit-input-placeholder {
-		        color: black;
-		    }
+			.engines>li:hover {
+				color: rgb(114, 114, 114);
+				cursor: pointer;
+			}
 
-		    #links {
-		        display: grid;
-		        grid-template-columns: repeat(4, 18.2vw);
-		        grid-auto-rows: 11.2vw;
-		        grid-column-gap: 2.4vw;
-		        grid-row-gap: 2.4vw;
-		        position: absolute;
-		        top: 50%;
-		        left: 50%;
-		        transform: translate(-50%, -50%);
+			#search_father>input {
+				outline: none;
+				height: 100%;
+				width: 93%;
+				padding: 0 0 0 9%;
+				border: none;
+				border-radius: 20px;
+				background-color: rgba(100, 100, 100, 0.4);
+				font: 16px/30px Electrolize;
+				color: white;
+				transition: all 0.2s
+			}
+
+			#search_father>input:hover {
+				background-color: rgba(200, 200, 200, 0.4);
+				box-shadow: 0px 0px 10px 2px rgba(200, 200, 200, 0.4);
+			}
+
+			#search_father>input:hover::-webkit-input-placeholder {
+				color: black;
+			}
+
+			#links {
+				display: grid;
+				grid-template-columns: repeat(4, 18.2vw);
+				grid-auto-rows: 11.2vw;
+				grid-column-gap: 2.4vw;
+				grid-row-gap: 2.4vw;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
 				z-index: -998;
-		    }
+			}
 
-		    #links>li {
-		        border: none;
-		        width: 100%;
-		        height: 100%;
-		    }
+			#links>li {
+				border: none;
+				width: 100%;
+				height: 100%;
+			}
 
-		    #links>li>a {
-		        display: inline-block;
-		        width: 100%;
-		        height: 100%;
-		        opacity: 0.8;
-		        transition: all 0.2s
-		    }
+			#links>li>a {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+				height: 100%;
+				opacity: 0.8;
+				transition: all 0.2s;
+			}
 
-		    #links>li a:hover {
-		        opacity: 1;
-		        transform: translateY(-1px);
-		        box-shadow: 3px 2px 10px 2px rgba(200, 200, 200, 0.4), -3px 2px 10px 2px rgba(200, 200, 200, 0.4);
 
-		    }
 
-		    #independent {
-		        width: 200px;
-		        height: 80px;
-		        position: absolute;
-		        left: 66.6%;
-		        top: -40px;
-		    }
+			#links>li>a:hover {
+				opacity: 1;
+				transform: translateY(-1px);
+				box-shadow: 3px 2px 10px 2px rgba(200, 200, 200, 0.4), -3px 2px 10px 2px rgba(200, 200, 200, 0.4);
+			}
+
+			#independent {
+				width: 200px;
+				height: 80px;
+				position: absolute;
+				left: 66.6%;
+				top: -40px;
+			}
+		}
+
+
+
+		/*************************************公共部分********************************************/
+		#links>li {
+			position: relative;
+		}
+
+		.setLink {
+			position: absolute;
+			display: inline-block;
+			transform: scale(0);
+			height: 21px;
+			width: 21px;
+			border-radius: 50%;
+			left: -25px;
+			top: 0px;
+			font: 16px/21px iconfont;
+			color: white;
+			text-align: center;
+			margin: 5px 9px 0 0;
+			background-color: rgba(155, 155, 155, 0.8);
+			transition: all 0.2s;
+		}
+
+		.linkMask {
+			background: linear-gradient(135deg, transparent, rgba(155, 155, 155, 0.8), transparent) rgba(200, 200, 200, 0.9);
+			position: absolute;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			display: grid;
+			grid-template-columns: 1fr;
+			grid-template-rows: repeat(3, 1fr);
+			opacity: 0;
+			transition: all 0.5s;
+			z-index: 9999;
+		}
+
+		.linkMask>div {
+			position: relative;
+			width: 100%;
+			height: 39.2%;
+			top: 30.9%;
+			/*为了垂直居中，（100-39.2）/2=30.9*/
+		}
+
+		.linkMask>div:last-child {
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr;
+			text-align: center;
+		}
+
+		.linkMask label {
+			font-size: 12px;
+			margin: 0 5%;
+		}
+
+		.linkMask input {
+			outline: none;
+			position: absolute;
+			width: 56.8%;
+			height: 100%;
+			right: 10%;
+			border: none;
+			border-bottom: 1px solid black;
+			border-image: linear-gradient(90deg, transparent, black, transparent) 1 10;
+			font-family: ELECTRO;
+			background: none;
+			color: white;
+			padding: 0 0 0 5%;
+		}
+
+		.linkMask aside {
+			/* text-align: center; */
+			display: inline;
+			font-family: iconfont;
+			cursor: pointer;
+		}
+
+		.linkMask aside:hover {
+			color: #fff;
+		}
+
+		.customLink {
+			font-size: 3vw;
 		}
