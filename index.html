@@ -30,26 +30,63 @@
 		</form>
 	</header>
 
-	<ul id="links">
-		<li><a href="https://www.google.com/ncr" style="background:url('images/google.png') 50% 50%/cover;">
-			</a>
-		</li>
-		<li><a href="https://github.com/" style="background:url('images/github.png') 50% 50%/cover;"></a></li>
-		<li><a href="http://www.w3school.com.cn/" style="background:url('images/w3school.png') 50% 50%/cover;"></a></li>
-		<li><a href="https://developer.mozilla.org/zh-CN/" style="background:url('images/MDN.png') 50% 50%/cover;"></a>
-		</li>
-		<li><a href="http://www.runoob.com/" style="background:url('images/runoob.png') 50% 50%/cover;"></a></li>
-		<li><a href="https://mp.weixin.qq.com/"
-				style="background:url('images/wechat public platform.png') 50% 50%/cover;"></a></li>
-		<li><a href="https://leetcode-cn.com/" style="background:url('images/LeetCode.png') 50% 50%/cover;"></a></li>
-		<li><a href="https://www.baidu.com" style="background:url('images/baidu.png') 50% 50%/cover;"></a></li>
-
-
-	</ul>
-
+	<div class="content">
+		<ul id="links">
+			<li>
+				<div class="addLink">&#xe6ca;</div>
+			</li>
+		</ul>
+	</div>
+	<div class="processBar">
+		<div class="processBarButton"></div>
+	</div>
 
 </body>
 <script>
+	//*****************************************元素节点*****************************************
+	var enginesNode = document.getElementsByClassName("engines")[0];
+	var search_fatherNode = document.getElementById("search_father");
+	var linksNode = document.getElementById("links");
+	var links_LiNodes = linksNode.getElementsByTagName("li");
+	var addLinkNode = document.getElementsByClassName("addLink")[0];
+
+
+	//*****************************************常量*****************************************
+	const defaultHrefs = {
+		LeetCode: {
+			URL: "https://leetcode-cn.com/",
+			style: "background:url('images/LeetCode.png') 50% 50%/cover;"
+		},
+		MDN: {
+			URL: "https://developer.mozilla.org/zh-CN/",
+			style: "background:url('images/MDN.png') 50% 50%/cover;"
+		},
+		baidu: {
+			URL: "https://www.baidu.com",
+			style: "background:url('images/baidu.png') 50% 50%/cover;"
+		},
+		github: {
+			URL: "https://github.com/",
+			style: "background:url('images/github.png') 50% 50%/cover;"
+		},
+		google: {
+			URL: "https://www.google.com/ncr",
+			style: "background: url('images/google.png') 50% 50% / cover;"
+		},
+		runoob: {
+			URL: "http://www.runoob.com/",
+			style: "background:url('images/runoob.png') 50% 50%/cover;"
+		},
+		w3school: {
+			URL: "http://www.w3school.com.cn/",
+			style: "background:url('images/w3school.png') 50% 50%/cover;"
+		},
+		wechat_public_platform: {
+			URL: "https://mp.weixin.qq.com/",
+			style: "background:url('images/wechat public platform.png') 50% 50%/cover;"
+		}
+
+	}
 	const engineList = {
 		Bing: "&#xe9ac;",
 		Yahoo: "&#xe61a;",
@@ -99,18 +136,102 @@
 			query: "q"
 		}
 	}
-	var enginesNode = document.getElementsByClassName("engines")[0];
-	var search_fatherNode = document.getElementById("search_father");
-	//创建节点
-	for (key in engineList) {
-		var node = document.createElement("li");
-		node.setAttribute("engineName", key)
-		node.innerHTML = engineList[key]
-		node.className = "enginePic"
-		enginesNode.appendChild(node);
+
+
+
+
+	//*****************************************变量*****************************************
+	var setLinkTimer = [];
+	var haveLinkMask = [];
+	var lastHoverA = null;
+	var INDEX = 0;
+
+	//*****************************************封装函数****************************************
+	var removeNode = aim => { //删除节点
+		aim.parentNode.removeChild(aim);
+	}
+	var createSettingNode = father => { //创建设置选项
+		var setLinkNode = document.createElement("span");
+		setLinkNode.className = "setLink"
+		setLinkNode.innerHTML = "&#xe645;"
+		father.appendChild(setLinkNode);
+	}
+	var addLinkMask = node => { //linkMask作谁的兄弟，就传入谁
+		var valueString = "",
+			URLString = "";
+		if (node.tagName == "A") {
+			valueString = "value=" + node.getAttribute("siteName");
+			URLString = "value=" + node.getAttribute("href");
+		}
+		var linkMask = document.createElement("div");
+		linkMask.className = "linkMask"
+		linkMask.innerHTML =
+			`<div><label>Name</label><input ${valueString} placeholder="Input site name"></input></div><div><label>URL</label><input ${URLString} placeholder="Begin with https://"></input></div><div><aside class=\"quit\">&#xe6c9;</aside><aside class=\"clear\">&#xe70a;</aside><aside class=\"done\">&#xe7b7;</aside></div>`;
+		node.parentNode.appendChild(linkMask);
+		haveLinkMask[parseInt(node.getAttribute("index"))] = true;
+		setTimeout(() => {
+			node.parentNode.getElementsByClassName("linkMask")[0].style.opacity = 1;
+		}, 100);
 	}
 
-	//设定动画效果
+
+	//*****************************************页面初始化*****************************************
+	window.onload = () => {
+		//创建书签列表
+		for (key in defaultHrefs) {
+			var liNode = document.createElement("li");
+			var aNode = document.createElement("a");
+			aNode.setAttribute("href", defaultHrefs[key].URL);
+			aNode.setAttribute("style", defaultHrefs[key].style);
+			aNode.setAttribute("index", INDEX++);
+			aNode.setAttribute("siteName", key);
+			aNode.className = "customLink";
+			liNode.appendChild(aNode);
+			linksNode.insertBefore(liNode, addLinkNode.parentNode);
+			setLinkTimer.push(null);
+			haveLinkMask.push(false);
+		}
+		addLinkNode.setAttribute("index", INDEX);
+
+		//创建搜索图标列表
+		for (key in engineList) {
+			var node = document.createElement("li");
+			node.setAttribute("engineName", key)
+			node.innerHTML = engineList[key]
+			node.className = "enginePic"
+			enginesNode.appendChild(node);
+		}
+		//记录搜索引擎选择历史
+		var enginename = null;
+		if (enginename = localStorage.getItem("selectedEngineName")) {
+			search_fatherNode.action = searchLinks[enginename].link;
+			glass.innerHTML = engineList[enginename]
+			search_fatherNode.children[2].name = searchLinks[enginename].query;
+		}
+		//加载时页面淡入
+		document.getElementsByTagName("body")[0].style.opacity = 1;
+	}
+
+
+
+
+
+
+
+
+	//*****************************************业务逻辑*****************************************
+
+	//搜索引擎更换功能
+	enginesNode.onclick = (e) => {
+		if (e.target.className == "enginePic") {
+			var engineName = e.target.getAttribute("enginename");
+			search_fatherNode.action = searchLinks[engineName].link;
+			glass.innerHTML = engineList[engineName]
+			search_fatherNode.children[2].name = searchLinks[engineName].query;
+			localStorage.setItem("selectedEngineName", engineName)
+		}
+	}
+	//设定搜索引擎更换动画效果
 	var glass = search_fatherNode.children[0];
 	var timer = null;
 	glass.onmouseover = () => {
@@ -141,50 +262,17 @@
 		}, 500);
 	}
 
-	//事件委托
-	enginesNode.onclick = (e) => {
-		if (e.target.className == "enginePic") {
-			var engineName = e.target.getAttribute("enginename");
-			search_fatherNode.action = searchLinks[engineName].link;
-			glass.innerHTML = engineList[engineName]
-			search_fatherNode.children[2].name = searchLinks[engineName].query;
-			localStorage.setItem("selectedEngineName", engineName)
-		}
-	}
 
 
 
-	window.onload = () => {
-		//加载时页面淡入
-		document.getElementsByTagName("body")[0].style.opacity = 1;
-		//记录搜索引擎选择历史
-		var enginename = null;
-		if (enginename = localStorage.getItem("selectedEngineName")) {
-			search_fatherNode.action = searchLinks[enginename].link;
-			glass.innerHTML = engineList[enginename]
-			search_fatherNode.children[2].name = searchLinks[enginename].query;
-		}
+
+	//书签添加功能
+	addLinkNode.onclick = e => {
+		addLinkMask(e.target)
 	}
-	var setLinkTimer = [];
-	var haveLinkMask = [];
-	var linksNode = document.getElementById("links");//customLink
-	var aNodes=linksNode.getElementsByTagName("a");
-	var lastHoverA = null;
-	for (let i = 0; i < linksNode.children.length; i++) {
-		aNodes[i].className="customLink";
-		setLinkTimer.push(null);
-		haveLinkMask.push(false);
-		linksNode.children[i].children[0].setAttribute("index", i);
-	}
-	var removeNode = aim => {
-		aim.parentNode.removeChild(aim);
-	}
-	var createSettingNode = father => { //创建设置选项
-		var setLinkNode = document.createElement("span");
-		setLinkNode.className = "setLink"
-		setLinkNode.innerHTML = "&#xe645;"
-		father.appendChild(setLinkNode);
-	}
+
+
+	//书签设置按钮动画
 	linksNode.onmouseover = (e) => {
 		if (e.target.tagName == "A") {
 			if (e.target.children[0] === undefined) {
@@ -196,8 +284,6 @@
 				lastHoverA = e.target;
 			}
 			e.target.children[0].style.cssText = "transform:scale(1)";
-			console.log("set");
-
 		}
 		if (e.target.className == "setLink") { //继续显示setLink按钮
 			var index = parseInt(e.target.parentNode.getAttribute("index"));
@@ -207,7 +293,7 @@
 
 
 	linksNode.onmouseout = (e) => {
-		if (e.target.tagName == "A" ) {
+		if (e.target.tagName == "A") {
 			setLinkTimer[parseInt(e.target.getAttribute("index"))] = setTimeout(() => {
 				e.target.children[0].style.cssText = "transform:scale(0)"
 			}, 200);
@@ -216,21 +302,13 @@
 			e.target.style.cssText = "transform:scale(0)"
 		}
 	}
-	
-	
+
+	//书签设置功能
 	linksNode.onclick = (e) => {
-		if (e.target.className == "setLink") { //设置按钮
+		if (e.target.className == "setLink") { //点击设置按钮时
 			e.preventDefault();
-			if (!haveLinkMask[parseInt(e.target.parentNode.getAttribute("index"))]) {
-				var linkMask = document.createElement("div");
-				linkMask.className = "linkMask"
-				linkMask.innerHTML =
-					"<div><label>Name</label><input></input></div><div><label>URL</label><input placeholder=\"Begin with 'https://'\"></input></div><div><aside class=\"quit\">&#xe6c9;</aside><aside class=\"clear\">&#xe70a;</aside><aside class=\"done\">&#xe7b7;</aside></div>";
-				e.target.parentNode.parentNode.appendChild(linkMask);
-				haveLinkMask[parseInt(e.target.parentNode.getAttribute("index"))] = true;
-				setTimeout(() => {
-					e.target.parentNode.parentNode.getElementsByClassName("linkMask")[0].style.opacity = 1;
-				}, 100);
+			if (haveLinkMask[parseInt(e.target.parentNode.getAttribute("index"))] == false) {
+				addLinkMask(e.target.parentNode);
 			}
 		} else if (e.target.tagName == "ASIDE") {
 			var thisLinkMask = e.target.parentNode.parentNode;
@@ -243,15 +321,34 @@
 			} else if (e.target.className == "done") { //完成按钮
 				if (thisLinkMask_URL.value.replace(/\s/gi, "") != "" && thisLinkMask_Name.value.replace(/\s/gi, "") !=
 					"") { //如果输入不为空
-					thisLinkMask.parentNode.children[0].innerHTML = thisLinkMask_Name.value;
-					thisLinkMask.parentNode.children[0].style.cssText = "background-color:rgba(255,255,255,0.8)";
-					thisLinkMask.parentNode.children[0].setAttribute("href", thisLinkMask_URL.value);
-					haveLinkMask[parseInt(thisLinkMask.parentNode.children[0].getAttribute("index"))]=false;
-					thisLinkMask.parentNode.removeChild(thisLinkMask);
+					if (e.target.parentNode.parentNode.parentNode.children[0].tagName == "A") { //如果是为了更改书签
+						thisLinkMask.parentNode.children[0].innerHTML = thisLinkMask_Name.value;
+						thisLinkMask.parentNode.children[0].setAttribute("siteName", thisLinkMask_Name.value);
+						thisLinkMask.parentNode.children[0].style.cssText = "background-color:rgba(255,255,255,0.8)";
+						thisLinkMask.parentNode.children[0].setAttribute("href", thisLinkMask_URL.value);
+						haveLinkMask[parseInt(thisLinkMask.parentNode.children[0].getAttribute("index"))] = false;
+						removeNode(thisLinkMask);
+					} else { //如果是为了添加书签
+						var liNode = document.createElement("li");
+						var aNode = document.createElement("a");
+						aNode.setAttribute("href", thisLinkMask_URL.value);
+						aNode.setAttribute("style", "background-color:rgba(255,255,255,0.8)");
+						aNode.setAttribute("index", INDEX++);
+						aNode.setAttribute("siteName", thisLinkMask_Name.value);
+						aNode.className = "customLink";
+						aNode.innerHTML = thisLinkMask_Name.value;
+						liNode.appendChild(aNode);
+						linksNode.insertBefore(liNode, addLinkNode.parentNode);
+						setLinkTimer.push(null);
+						haveLinkMask.push(false);
+						haveLinkMask[parseInt(thisLinkMask.parentNode.children[0].getAttribute("index"))] = false;
+						addLinkNode.setAttribute("index", INDEX);
+						removeNode(thisLinkMask);
+					}
 				}
 			} else if (e.target.className == "quit") { //退出按钮
-				haveLinkMask[parseInt(thisLinkMask.parentNode.children[0].getAttribute("index"))]=false;
-				thisLinkMask.parentNode.removeChild(thisLinkMask);
+				haveLinkMask[parseInt(thisLinkMask.parentNode.children[0].getAttribute("index"))] = false;
+				removeNode(thisLinkMask);
 			}
 
 		}
