@@ -89,6 +89,7 @@
 				bottom: 19.1%;
 				right: 0;
 			}
+			
 
 			#links {
 				display: none;
@@ -585,6 +586,9 @@
 			color: rgba(50, 50, 50, 0.7);
 			background-color: rgba(205, 205, 205, 0.9);
 		}
+		.addLink::selection { 
+			background:transparent;
+		}
 
 		.test{
 			width: 50%;
@@ -593,4 +597,6 @@
 			background-color: red;
 			display: none;
 		}
-		
+		span::selection { 
+			background:transparent;
+		}

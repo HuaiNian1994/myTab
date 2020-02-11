@@ -46,6 +46,7 @@
 	</div>
 
 </body>
+<script src="js/bezier-easing.min.js"></script>
 <script>
 	//*****************************************元素节点*****************************************
 	var enginesNode = document.getElementsByClassName("engines")[0];
@@ -193,8 +194,41 @@
 	var setLinksTopPosition = () => {
 		linksTopPosition = []; //清空
 		for (let i = 0; i < links_LiNodes.length; i++) { //计算要达到每一页links所需要的top定值
-			linksTopPosition.push(-(links_LiNodes[0].offsetHeight * 2 + 0.048 * contentNode.offsetWidth) * i + "px")
+			linksTopPosition.push(-(links_LiNodes[0].offsetHeight * 2 + 0.048 * contentNode.offsetWidth) * i )
 		}
+	}
+	//获得一个节点的CSS属性数值，是moveYAnimation的工具函数
+	function getStyleValue(node, name) {
+		return parseInt(getComputedStyle(node)[name].replace("px", ""));
+	}
+	//Y方向运动函数，支持三次贝塞尔曲线，params是一个数组，意为两个确定点的坐标[x1,y1,x2,y2]
+	var moveYAnimation = (node, aimTopValue, duration, stepTime, params) => {
+		if(node.moveYAnimationTimer) clearInterval(node.moveYAnimationTimer);//不允许动画叠加
+		stepTime = stepTime ? stepTime : 5;
+		var cubicBezier = BezierEasing(...params)
+		var initialTopValue = getStyleValue(node, "top");
+		console.log("initialTopValue:"+initialTopValue);
+		
+		var nowTopValue = initialTopValue;
+		var distance = aimTopValue - initialTopValue;
+		console.log("distance:"+distance);
+		var aStep = distance / (duration / stepTime);
+		var flag = false;
+		var pastDistance = 0; //意为假想为线性运动时的理论距离
+		node.moveYAnimationTimer = setInterval(() => {
+			pastDistance += aStep;
+			nowTopValue = initialTopValue + distance * cubicBezier(pastDistance / distance);
+			if (flag) {
+				clearInterval(node.moveYAnimationTimer)
+				node.style.top = aimTopValue + "px";
+			} else {
+				node.style.top = nowTopValue + "px";
+			}
+		}, stepTime)
+		setTimeout(() => {
+			flag = true;
+			console.log("moveYAnimation:" + duration + "毫秒已到")
+		}, duration)
 	}
 
 	//*****************************************页面初始化*****************************************
@@ -217,7 +251,7 @@
 
 		//重置拖动条按钮位置
 		processBarButtonNode.style.top = processBarNode.offsetHeight / 3 - processBarButtonNode.offsetHeight / 2 +
-		"px";
+			"px";
 
 		//创建搜索图标列表
 		for (key in engineList) {
@@ -385,17 +419,22 @@
 		setLinksTopPosition();
 		isOnDrag = true;
 	}
+	var buttonMoved = false;
 	dragAreaNode.onmousemove = (e) => {
 		e.preventDefault();
 		if (isOnDrag) {
 			mouseInContentY = e.pageY - dragAreaNode.offsetTop;
-			if (0 < mouseInContentY && mouseInContentY < processBarHeight / 2) { //翻到第一页？
+			if (mouseInContentY < processBarHeight / 2) { //翻到第一页？
+				// moveYAnimation(processBarButtonNode,1000,processBarHeight / 3 - processBarButtonNode.offsetHeight / 2,5)
 				processBarButtonNode.style.top = processBarHeight / 3 - processBarButtonNode.offsetHeight / 2 + "px";
 				linksNode.style.top = linksTopPosition[0];
-			} else if (processBarHeight / 2 < mouseInContentY && mouseInContentY < processBarHeight) { //翻到第二页？
+			} else if (!buttonMoved && mouseInContentY < processBarHeight) { //翻到第二页？
 				processBarButtonNode.style.top = 2 * processBarHeight / 3 - processBarButtonNode.offsetHeight / 2 +
 					"px";
-				linksNode.style.top = linksTopPosition[1];
+				moveYAnimation(linksNode, linksTopPosition[1], 1000, 5, [.06, .7, .27, 1])
+				buttonMoved = true;
+				
+				
 			}
 		}
 	}
