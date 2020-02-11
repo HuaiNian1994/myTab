@@ -60,39 +60,39 @@
 	var averageLineNode = document.getElementsByClassName("averageLine")[1];
 	//*****************************************常量*****************************************
 	const defaultHrefs = {
-		LeetCode: {
-			URL: "https://leetcode-cn.com/",
-			style: "background:url('images/LeetCode.png') 50% 50%/cover;"
-		},
-		MDN: {
-			URL: "https://developer.mozilla.org/zh-CN/",
-			style: "background:url('images/MDN.png') 50% 50%/cover;"
-		},
-		baidu: {
-			URL: "https://www.baidu.com",
-			style: "background:url('images/baidu.png') 50% 50%/cover;"
+		google: {
+			URL: "https://www.google.com/ncr",
+			style: "background: url('images/google.png') 50% 50% / cover;"
 		},
 		github: {
 			URL: "https://github.com/",
 			style: "background:url('images/github.png') 50% 50%/cover;"
 		},
-		google: {
-			URL: "https://www.google.com/ncr",
-			style: "background: url('images/google.png') 50% 50% / cover;"
+		w3school: {
+			URL: "http://www.w3school.com.cn/",
+			style: "background:url('images/w3school.png') 50% 50%/cover;"
+		},
+		MDN: {
+			URL: "https://developer.mozilla.org/zh-CN/",
+			style: "background:url('images/MDN.png') 50% 50%/cover;"
 		},
 		runoob: {
 			URL: "http://www.runoob.com/",
 			style: "background:url('images/runoob.png') 50% 50%/cover;"
 		},
-		w3school: {
-			URL: "http://www.w3school.com.cn/",
-			style: "background:url('images/w3school.png') 50% 50%/cover;"
-		},
 		wechat_public_platform: {
 			URL: "https://mp.weixin.qq.com/",
 			style: "background:url('images/wechat public platform.png') 50% 50%/cover;"
-		}
+		},
+		LeetCode: {
+			URL: "https://leetcode-cn.com/",
+			style: "background:url('images/LeetCode.png') 50% 50%/cover;"
+		},
 
+		baidu: {
+			URL: "https://www.baidu.com",
+			style: "background:url('images/baidu.png') 50% 50%/cover;"
+		}
 	}
 	const engineList = {
 		Bing: "&#xe9ac;",
@@ -190,8 +190,8 @@
 			stageNode.className = "stage"
 		}
 	}
-	var setLinksTopPosition=()=>{
-		linksTopPosition=[];//清空
+	var setLinksTopPosition = () => {
+		linksTopPosition = []; //清空
 		for (let i = 0; i < links_LiNodes.length; i++) { //计算要达到每一页links所需要的top定值
 			linksTopPosition.push(-(links_LiNodes[0].offsetHeight * 2 + 0.048 * contentNode.offsetWidth) * i + "px")
 		}
@@ -216,7 +216,8 @@
 		addLinkNode.setAttribute("index", INDEX);
 
 		//重置拖动条按钮位置
-		processBarButtonNode.style.top=processBarNode.offsetHeight / 3 - processBarButtonNode.offsetHeight / 2 + "px";
+		processBarButtonNode.style.top = processBarNode.offsetHeight / 3 - processBarButtonNode.offsetHeight / 2 +
+		"px";
 
 		//创建搜索图标列表
 		for (key in engineList) {
