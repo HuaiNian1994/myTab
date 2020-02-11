@@ -13,6 +13,7 @@
 </head>
 
 <body style="opacity: 0">
+	<div class="test"></div>
 	<header>
 		<aside id="independent">
 			<span id="clock"></span>
@@ -37,7 +38,10 @@
 			</li>
 		</ul>
 	</div>
-	<div class="processBar">
+	<div class="dragArea">
+		<div class="processBar">
+			<span class="averageLine"></span><span class="averageLine"></span><span class="averageLine"></span>
+		</div>
 		<div class="processBarButton"></div>
 	</div>
 
@@ -49,8 +53,11 @@
 	var linksNode = document.getElementById("links");
 	var links_LiNodes = linksNode.getElementsByTagName("li");
 	var addLinkNode = document.getElementsByClassName("addLink")[0];
-
-
+	var processBarButtonNode = document.getElementsByClassName("processBarButton")[0];
+	var contentNode = document.getElementsByClassName("content")[0];
+	var dragAreaNode = document.getElementsByClassName("dragArea")[0];
+	var processBarNode = document.getElementsByClassName("processBar")[0];
+	var averageLineNode = document.getElementsByClassName("averageLine")[1];
 	//*****************************************常量*****************************************
 	const defaultHrefs = {
 		LeetCode: {
@@ -144,6 +151,10 @@
 	var setLinkTimer = [];
 	var haveLinkMask = [];
 	var lastHoverA = null;
+	var processBarHeight = 0;
+	var linksTopPosition = []; //记录要达到每一页links所需要的top定值
+	var mouseInContentY = 0;
+	var isOnDrag = false;
 	var INDEX = 0;
 
 	//*****************************************封装函数****************************************
@@ -173,7 +184,18 @@
 			node.parentNode.getElementsByClassName("linkMask")[0].style.opacity = 1;
 		}, 100);
 	}
-
+	var createProcessBarStagePresentation = (account) => {
+		for (let i = 0; i < account; i++) {
+			var stageNode = document.createElement("div")
+			stageNode.className = "stage"
+		}
+	}
+	var setLinksTopPosition=()=>{
+		linksTopPosition=[];//清空
+		for (let i = 0; i < links_LiNodes.length; i++) { //计算要达到每一页links所需要的top定值
+			linksTopPosition.push(-(links_LiNodes[0].offsetHeight * 2 + 0.048 * contentNode.offsetWidth) * i + "px")
+		}
+	}
 
 	//*****************************************页面初始化*****************************************
 	window.onload = () => {
@@ -192,6 +214,9 @@
 			haveLinkMask.push(false);
 		}
 		addLinkNode.setAttribute("index", INDEX);
+
+		//重置拖动条按钮位置
+		processBarButtonNode.style.top=processBarNode.offsetHeight / 3 - processBarButtonNode.offsetHeight / 2 + "px";
 
 		//创建搜索图标列表
 		for (key in engineList) {
@@ -352,6 +377,32 @@
 			}
 
 		}
+	}
+
+	processBarButtonNode.onmousedown = (e) => {
+		processBarHeight = processBarNode.offsetHeight; //记录拖动条高度
+		setLinksTopPosition();
+		isOnDrag = true;
+	}
+	dragAreaNode.onmousemove = (e) => {
+		e.preventDefault();
+		if (isOnDrag) {
+			mouseInContentY = e.pageY - dragAreaNode.offsetTop;
+			if (0 < mouseInContentY && mouseInContentY < processBarHeight / 2) { //翻到第一页？
+				processBarButtonNode.style.top = processBarHeight / 3 - processBarButtonNode.offsetHeight / 2 + "px";
+				linksNode.style.top = linksTopPosition[0];
+			} else if (processBarHeight / 2 < mouseInContentY && mouseInContentY < processBarHeight) { //翻到第二页？
+				processBarButtonNode.style.top = 2 * processBarHeight / 3 - processBarButtonNode.offsetHeight / 2 +
+					"px";
+				linksNode.style.top = linksTopPosition[1];
+			}
+		}
+	}
+	dragAreaNode.onmouseup = (e) => {
+		isOnDrag = false;
+	}
+	dragAreaNode.onmouseleave = (e) => {
+		isOnDrag = false;
 	}
 </script>
 <script src="independent_modules/clock/clock.js"></script>
