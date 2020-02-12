@@ -41,7 +41,7 @@
 	<div class="controlArea">
 		<span class="upArrow">&#xecd0;</span>
 		<span><input type="text" class="pageIndex"></span>
-		<span style="font-size: 2.2vh;">Total:2</span>
+		<span style="font-size: 2.2vh;" class="totalPage"></span>
 		<span class="downArrow">&#xe662;</span>
 	</div>
 
@@ -58,6 +58,7 @@
 	var upArrowNode = document.getElementsByClassName("upArrow")[0];
 	var downArrowNode = document.getElementsByClassName("downArrow")[0];
 	var pageIndexNode = document.getElementsByClassName("pageIndex")[0];
+	var totalPageNode=document.getElementsByClassName("totalPage")[0];
 	//*****************************************常量*****************************************
 	const defaultHrefs = {
 		google: {
@@ -153,8 +154,8 @@
 	var lastHoverA = null; //最后一次onblur的书签
 	var linksTopPosition = []; //记录要达到每一页links所需要的top定值
 	var INDEX = 0; //links中li的总数
-	var nowPage = 1;
-
+	var nowPage = 1;//书签初始页是第一页
+	var totalPage=2;//初始有两页书签
 	//*****************************************封装函数****************************************
 	var removeNode = aim => { //删除节点
 		aim.parentNode.removeChild(aim);
@@ -183,12 +184,7 @@
 		}, 100);
 	}
 
-	var setLinksTopPosition = () => {
-		linksTopPosition = []; //清空
-		for (let i = 0; i < links_LiNodes.length; i++) { //计算要达到每一页links所需要的top定值
-			linksTopPosition.push(-(links_LiNodes[0].offsetHeight * 2 + 0.048 * contentNode.offsetWidth) * i)
-		}
-	}
+	
 	//获得一个节点的CSS属性数值，是moveYAnimation的工具函数
 	function getStyleValue(node, name) {
 		return parseInt(getComputedStyle(node)[name].replace("px", ""));
@@ -229,15 +225,35 @@
 			console.log("moveYAnimation:" + duration + "毫秒已到")
 		}, duration)
 	}
+	var updateLinksTopPosition = () => {
+		linksTopPosition = []; //清空
+		for (let i = 0; i < links_LiNodes.length; i++) { //计算要达到每一页links所需要的top定值
+			linksTopPosition.push(-(links_LiNodes[0].offsetHeight * 2 + 0.048 * contentNode.offsetWidth) * i)
+		}
+	}
+	var updateTotalPage=()=>{
+		var lastTotalPage=totalPage;
+		totalPage=Math.ceil(links_LiNodes.length / 8);
+		totalPageNode.innerText="Total: "+totalPage;
+		return totalPage-lastTotalPage;//返回页数的增量
+	}
 	var updateNowPage = (newIndex) => {
-		if (newIndex > Math.ceil(links_LiNodes.length / 8)) {
-			newIndex = Math.ceil(links_LiNodes.length / 8);
+		if (newIndex > totalPage) {
+			newIndex = totalPage;
 		} else if (newIndex <= 0) {
 			newIndex = 1;
 		}
 		pageIndexNode.value = newIndex;
 		nowPage = newIndex;
 	}
+	var links_LiNodesLengthChanged=()=>{
+		var delta=updateTotalPage();						
+		updateLinksTopPosition();
+		updateNowPage(nowPage+delta);
+		moveYAnimation(linksNode,linksTopPosition[nowPage-1])
+	}
+
+
 
 	//*****************************************页面初始化*****************************************
 	window.onload = () => {
@@ -257,7 +273,7 @@
 		}
 		addLinkNode.setAttribute("index", INDEX);
 
-		updateNowPage(1);
+		links_LiNodesLengthChanged();
 
 
 		//创建搜索图标列表
@@ -277,7 +293,7 @@
 		}
 
 		//设定links偏移量
-		setLinksTopPosition();
+		updateLinksTopPosition();
 
 		//加载时页面淡入
 		document.getElementsByTagName("body")[0].style.opacity = 1;
@@ -410,11 +426,13 @@
 						aNode.innerHTML = thisLinkMask_Name.value;
 						liNode.appendChild(aNode);
 						linksNode.insertBefore(liNode, addLinkNode.parentNode);
+						links_LiNodesLengthChanged();
 						setLinkTimer.push(null);
 						haveLinkMask.push(false);
 						haveLinkMask[parseInt(thisLinkMask.parentNode.children[0].getAttribute("index"))] = false;
 						addLinkNode.setAttribute("index", INDEX);
 						removeNode(thisLinkMask);
+						
 					}
 				}
 			} else if (e.target.className == "quit") { //退出按钮
@@ -428,12 +446,13 @@
 	
 	//只能点一次，动画结束前不能再点
 	upArrowNode.onclick = () => {
-		moveYAnimation(linksNode, linksTopPosition[0])
 		updateNowPage(nowPage - 1)
+		moveYAnimation(linksNode, linksTopPosition[nowPage-1])
+		
 	}
 	downArrowNode.onclick = () => {
-		moveYAnimation(linksNode, linksTopPosition[1])
 		updateNowPage(nowPage + 1)
+		moveYAnimation(linksNode, linksTopPosition[nowPage-1])	
 	}
 
 
