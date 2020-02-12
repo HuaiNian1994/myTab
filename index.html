@@ -38,11 +38,11 @@
 			</li>
 		</ul>
 	</div>
-	<div class="dragArea">
-		<div class="processBar">
-			<span class="averageLine"></span><span class="averageLine"></span><span class="averageLine"></span>
-		</div>
-		<div class="processBarButton"></div>
+	<div class="controlArea">
+		<span class="upArrow">&#xecd0;</span>
+		<span><input type="text" class="pageIndex"></span>
+		<span style="font-size: 2.2vh;">Total:2</span>
+		<span class="downArrow">&#xe662;</span>
 	</div>
 
 </body>
@@ -54,11 +54,10 @@
 	var linksNode = document.getElementById("links");
 	var links_LiNodes = linksNode.getElementsByTagName("li");
 	var addLinkNode = document.getElementsByClassName("addLink")[0];
-	var processBarButtonNode = document.getElementsByClassName("processBarButton")[0];
 	var contentNode = document.getElementsByClassName("content")[0];
-	var dragAreaNode = document.getElementsByClassName("dragArea")[0];
-	var processBarNode = document.getElementsByClassName("processBar")[0];
-	var averageLineNode = document.getElementsByClassName("averageLine")[1];
+	var upArrowNode = document.getElementsByClassName("upArrow")[0];
+	var downArrowNode = document.getElementsByClassName("downArrow")[0];
+	var pageIndexNode = document.getElementsByClassName("pageIndex")[0];
 	//*****************************************常量*****************************************
 	const defaultHrefs = {
 		google: {
@@ -149,14 +148,12 @@
 
 
 	//*****************************************变量*****************************************
-	var setLinkTimer = [];
-	var haveLinkMask = [];
-	var lastHoverA = null;
-	var processBarHeight = 0;
+	var setLinkTimer = []; //含有每一个书签的设置按钮的
+	var haveLinkMask = []; //记录书签是否被linkMask覆盖
+	var lastHoverA = null; //最后一次onblur的书签
 	var linksTopPosition = []; //记录要达到每一页links所需要的top定值
-	var mouseInContentY = 0;
-	var isOnDrag = false;
-	var INDEX = 0;
+	var INDEX = 0; //links中li的总数
+	var nowPage = 1;
 
 	//*****************************************封装函数****************************************
 	var removeNode = aim => { //删除节点
@@ -185,50 +182,61 @@
 			node.parentNode.getElementsByClassName("linkMask")[0].style.opacity = 1;
 		}, 100);
 	}
-	var createProcessBarStagePresentation = (account) => {
-		for (let i = 0; i < account; i++) {
-			var stageNode = document.createElement("div")
-			stageNode.className = "stage"
-		}
-	}
+
 	var setLinksTopPosition = () => {
 		linksTopPosition = []; //清空
 		for (let i = 0; i < links_LiNodes.length; i++) { //计算要达到每一页links所需要的top定值
-			linksTopPosition.push(-(links_LiNodes[0].offsetHeight * 2 + 0.048 * contentNode.offsetWidth) * i )
+			linksTopPosition.push(-(links_LiNodes[0].offsetHeight * 2 + 0.048 * contentNode.offsetWidth) * i)
 		}
 	}
 	//获得一个节点的CSS属性数值，是moveYAnimation的工具函数
 	function getStyleValue(node, name) {
 		return parseInt(getComputedStyle(node)[name].replace("px", ""));
-	}
+	};
 	//Y方向运动函数，支持三次贝塞尔曲线，params是一个数组，意为两个确定点的坐标[x1,y1,x2,y2]
 	var moveYAnimation = (node, aimTopValue, duration, stepTime, params) => {
-		if(node.moveYAnimationTimer) clearInterval(node.moveYAnimationTimer);//不允许动画叠加
+		clearInterval(node.moveYAnimationTimer); //不允许动画重叠
+		//默认值
+		duration = duration ? duration : 300;
 		stepTime = stepTime ? stepTime : 5;
+		if (params == "linear") {
+			params = [0, 0, 1, 1];
+		} else if (params instanceof Array) {
+			for (let i = 0; i < 4; i++) {
+				if (!(params[i] <= 1)) {
+					params = [.06, .7, .27, 1];
+					console.log("动画参数错误，将采用默认参数[.06, .7, .27, 1]");
+					break;
+				}
+			}
+		} else {
+			params = [.06, .7, .27, 1];
+		}
 		var cubicBezier = BezierEasing(...params)
 		var initialTopValue = getStyleValue(node, "top");
-		console.log("initialTopValue:"+initialTopValue);
-		
 		var nowTopValue = initialTopValue;
 		var distance = aimTopValue - initialTopValue;
-		console.log("distance:"+distance);
 		var aStep = distance / (duration / stepTime);
-		var flag = false;
 		var pastDistance = 0; //意为假想为线性运动时的理论距离
-		node.moveYAnimationTimer = setInterval(() => {
+		node.moveYAnimationTimer = setInterval(() => { //步进
 			pastDistance += aStep;
 			nowTopValue = initialTopValue + distance * cubicBezier(pastDistance / distance);
-			if (flag) {
-				clearInterval(node.moveYAnimationTimer)
-				node.style.top = aimTopValue + "px";
-			} else {
-				node.style.top = nowTopValue + "px";
-			}
+			node.style.top = nowTopValue + "px";
 		}, stepTime)
-		setTimeout(() => {
-			flag = true;
+		setTimeout(() => { //终止
+			clearInterval(node.moveYAnimationTimer)
+			node.style.top = aimTopValue + "px";
 			console.log("moveYAnimation:" + duration + "毫秒已到")
 		}, duration)
+	}
+	var updateNowPage = (newIndex) => {
+		if (newIndex > Math.ceil(links_LiNodes.length / 8)) {
+			newIndex = Math.ceil(links_LiNodes.length / 8);
+		} else if (newIndex <= 0) {
+			newIndex = 1;
+		}
+		pageIndexNode.value = newIndex;
+		nowPage = newIndex;
 	}
 
 	//*****************************************页面初始化*****************************************
@@ -249,9 +257,8 @@
 		}
 		addLinkNode.setAttribute("index", INDEX);
 
-		//重置拖动条按钮位置
-		processBarButtonNode.style.top = processBarNode.offsetHeight / 3 - processBarButtonNode.offsetHeight / 2 +
-			"px";
+		updateNowPage(1);
+
 
 		//创建搜索图标列表
 		for (key in engineList) {
@@ -268,6 +275,10 @@
 			glass.innerHTML = engineList[enginename]
 			search_fatherNode.children[2].name = searchLinks[enginename].query;
 		}
+
+		//设定links偏移量
+		setLinksTopPosition();
+
 		//加载时页面淡入
 		document.getElementsByTagName("body")[0].style.opacity = 1;
 	}
@@ -279,7 +290,7 @@
 
 
 
-	//*****************************************业务逻辑*****************************************
+	//*****************************************基于事件的业务逻辑*****************************************
 
 	//搜索引擎更换功能
 	enginesNode.onclick = (e) => {
@@ -414,35 +425,28 @@
 		}
 	}
 
-	processBarButtonNode.onmousedown = (e) => {
-		processBarHeight = processBarNode.offsetHeight; //记录拖动条高度
-		setLinksTopPosition();
-		isOnDrag = true;
+	
+	//只能点一次，动画结束前不能再点
+	upArrowNode.onclick = () => {
+		moveYAnimation(linksNode, linksTopPosition[0])
+		updateNowPage(nowPage - 1)
 	}
-	var buttonMoved = false;
-	dragAreaNode.onmousemove = (e) => {
-		e.preventDefault();
-		if (isOnDrag) {
-			mouseInContentY = e.pageY - dragAreaNode.offsetTop;
-			if (mouseInContentY < processBarHeight / 2) { //翻到第一页？
-				// moveYAnimation(processBarButtonNode,1000,processBarHeight / 3 - processBarButtonNode.offsetHeight / 2,5)
-				processBarButtonNode.style.top = processBarHeight / 3 - processBarButtonNode.offsetHeight / 2 + "px";
-				linksNode.style.top = linksTopPosition[0];
-			} else if (!buttonMoved && mouseInContentY < processBarHeight) { //翻到第二页？
-				processBarButtonNode.style.top = 2 * processBarHeight / 3 - processBarButtonNode.offsetHeight / 2 +
-					"px";
-				moveYAnimation(linksNode, linksTopPosition[1], 1000, 5, [.06, .7, .27, 1])
-				buttonMoved = true;
-				
-				
+	downArrowNode.onclick = () => {
+		moveYAnimation(linksNode, linksTopPosition[1])
+		updateNowPage(nowPage + 1)
+	}
+
+
+
+	//输入数值的页面跳转
+	pageIndexNode.onkeydown = (e) => {
+		if (e.key == "Enter") {
+			var input = parseInt(pageIndexNode.value)
+			if (input) {
+				updateNowPage(input);
+				moveYAnimation(linksNode, linksTopPosition[nowPage - 1]);
 			}
 		}
-	}
-	dragAreaNode.onmouseup = (e) => {
-		isOnDrag = false;
-	}
-	dragAreaNode.onmouseleave = (e) => {
-		isOnDrag = false;
 	}
 </script>
 <script src="independent_modules/clock/clock.js"></script>
