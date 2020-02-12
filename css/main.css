@@ -424,7 +424,7 @@
 			}
 
 
-			.controlArea {
+			.pageControler {
 				display: grid;
 				grid-template-columns: 1fr;
 				position: absolute;
@@ -438,11 +438,11 @@
 				transition: all 1s;
 			}
 
-			.controlArea:hover {
+			.pageControler:hover {
 				opacity: 1;
 			}
 
-			.controlArea>span {
+			.pageControler>span {
 				display: flex;
 				font: 4vh/4vh iconfont;
 				color: white;

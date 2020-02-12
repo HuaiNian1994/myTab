@@ -38,7 +38,7 @@
 			</li>
 		</ul>
 	</div>
-	<div class="controlArea">
+	<div class="pageControler">
 		<span class="upArrow">&#xecd0;</span>
 		<span><input type="text" class="pageIndex"></span>
 		<span style="font-size: 2.2vh;" class="totalPage"></span>
@@ -253,10 +253,36 @@
 		moveYAnimation(linksNode,linksTopPosition[nowPage-1])
 	}
 
-
-
-	//*****************************************页面初始化*****************************************
-	window.onload = () => {
+	
+	var saveLinksContent=()=>{//未实装
+		//待实现：saveLinksBackground();
+		var href=null,siteName=null,style=null,index=null,obj={},arr=[];
+		for(let i=0;i<links_LiNodes.length-1;i++){
+			href=links_LiNodes[i].children[0].getAttribute("href");
+			siteName=links_LiNodes[i].children[0].getAttribute("siteName");
+			style=links_LiNodes[i].children[0].getAttribute("style");
+			index=links_LiNodes[i].children[0].getAttribute("index");
+			obj={href,siteName,style,index}
+			arr.push(obj)
+		}
+		localStorage.setItem("customLinks",arr);//localStorage不支持存储对象，待改进：拆分存储
+	}
+	var saveLinks=()=>{
+		// 待实现：saveLinksPosition();
+		saveLinksContent();
+	}
+	var saveSearchEngine=engineName=>{
+		localStorage.setItem("selectedEngineName", engineName);
+	}
+	var saveCustomSettings=()=>{//本函数用来展示需要存储的数据，不调用。
+		saveSearchEngine();
+		saveLinks();
+		// 待实现：savePageground();
+		//待实现：saveWeatherComponent();
+		//待实现：savePageControler();
+	}
+	
+	var initializeNodes=()=>{
 		//创建书签列表
 		for (key in defaultHrefs) {
 			var liNode = document.createElement("li");
@@ -272,10 +298,7 @@
 			haveLinkMask.push(false);
 		}
 		addLinkNode.setAttribute("index", INDEX);
-
 		links_LiNodesLengthChanged();
-
-
 		//创建搜索图标列表
 		for (key in engineList) {
 			var node = document.createElement("li");
@@ -284,17 +307,21 @@
 			node.className = "enginePic"
 			enginesNode.appendChild(node);
 		}
-		//记录搜索引擎选择历史
+	}
+	var initializeSearchEngine=()=>{//设置历史中最后一次的选择的搜索引擎
 		var enginename = null;
 		if (enginename = localStorage.getItem("selectedEngineName")) {
 			search_fatherNode.action = searchLinks[enginename].link;
 			glass.innerHTML = engineList[enginename]
 			search_fatherNode.children[2].name = searchLinks[enginename].query;
 		}
+		
+	}
 
-		//设定links偏移量
-		updateLinksTopPosition();
-
+	//*****************************************页面初始化*****************************************
+	window.onload = () => {
+		initializeNodes();
+		initializeSearchEngine();
 		//加载时页面淡入
 		document.getElementsByTagName("body")[0].style.opacity = 1;
 	}
@@ -315,7 +342,7 @@
 			search_fatherNode.action = searchLinks[engineName].link;
 			glass.innerHTML = engineList[engineName]
 			search_fatherNode.children[2].name = searchLinks[engineName].query;
-			localStorage.setItem("selectedEngineName", engineName)
+			saveSearchEngine(engineName);
 		}
 	}
 	//设定搜索引擎更换动画效果
