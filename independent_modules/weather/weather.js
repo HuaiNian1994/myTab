@@ -51,7 +51,7 @@ fetch(`https://restapi.amap.com/v3/ip?key=${myKey}`)//获取城市信息
         }
         var adCode = null;
         return new Promise((resolve, reject) => {
-            fetch("./independent_modules/weather/城市编码.json")//获取表格并查表，从而获取adCode
+            fetch("../independent_modules/weather/城市编码.json")//获取表格并查表，从而获取adCode
                 .then(data => data.json())
                 .then(res => {
                     for (let i = 0; i < res.length; i++) {
