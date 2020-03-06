@@ -1,0 +1,27 @@
+{
+  "name": "mytab",
+  "version": "0.0.1",
+  "description": "A tab plugin for chrome",
+  "main": "index.js",
+  "dependencies": {
+    "autoprefixer": "^9.7.4",
+    "postcss-cli": "^7.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HuaiNian1994/myTab.git"
+  },
+  "keywords": [
+    "huainian"
+  ],
+  "author": "huainian",
+  "license": "CC-BY-NC-4.0",
+  "bugs": {
+    "url": "https://github.com/HuaiNian1994/myTab/issues"
+  },
+  "homepage": "https://github.com/HuaiNian1994/myTab#readme"
+}

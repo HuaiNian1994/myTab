@@ -1,54 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Hi~~</title>
-	<base target="_self"><!-- 所有链接默认在本页面打开 -->
-	<link rel="icon" href="images/myIcon.png">
-	<link rel="stylesheet" href="css/reset.css">
-	<link rel="stylesheet" href="css/main.css">
-	<link rel="stylesheet" href="independent_modules/weather/weather.css">
-</head>
-
-<body style="opacity: 0">
-	<div class="test"></div>
-	<header>
-		<aside id="independent">
-			<span id="clock"></span>
-			<aside id="weather">
-				<span id="paint">&#xe9ba;</span>
-				<span id="temperature">0℃</span>
-				<span id="state"> Loading...</span>
-			</aside>
-		</aside>
-		<form id="search_father" action="https://www.google.com/search?" method="get">
-			<span>&#xe8f0;</span>
-			<ul class="engines"></ul>
-			<!-- 想要提交表单，要为相应元素设置name属性，控制键的生成。否则无法生成键值对中的键 -->
-			<input type="text" id="search" autocomplete="off" name="q" placeholder="What do you want...?">
-		</form>
-	</header>
-
-	<div class="content">
-		<ul id="links">
-			<li>
-				<div class="addLink">&#xe6ca;</div>
-			</li>
-		</ul>
-	</div>
-	<div class="pageControler">
-		<span class="upArrow">&#xecd0;</span>
-		<span><input type="text" class="pageIndex"></span>
-		<span style="font-size: 2.2vh;" class="totalPage"></span>
-		<span class="downArrow">&#xe662;</span>
-	</div>
-
-</body>
-<script src="js/bezier-easing.min.js"></script>
-<script>
-	//*****************************************元素节点*****************************************
+//*****************************************元素节点*****************************************
 	var enginesNode = document.getElementsByClassName("engines")[0];
 	var search_fatherNode = document.getElementById("search_father");
 	var linksNode = document.getElementById("links");
@@ -63,36 +13,36 @@
 	const defaultHrefs = {
 		google: {
 			URL: "https://www.google.com/ncr",
-			style: "background: url('images/google.png') 50% 50% / cover;"
+			style: "background: url('../images/google.png') 50% 50% / cover;"
 		},
 		github: {
 			URL: "https://github.com/",
-			style: "background:url('images/github.png') 50% 50%/cover;"
+			style: "background:url('../images/github.png') 50% 50%/cover;"
 		},
 		w3school: {
 			URL: "http://www.w3school.com.cn/",
-			style: "background:url('images/w3school.png') 50% 50%/cover;"
+			style: "background:url('../images/w3school.png') 50% 50%/cover;"
 		},
 		MDN: {
 			URL: "https://developer.mozilla.org/zh-CN/",
-			style: "background:url('images/MDN.png') 50% 50%/cover;"
+			style: "background:url('../images/MDN.png') 50% 50%/cover;"
 		},
 		runoob: {
 			URL: "http://www.runoob.com/",
-			style: "background:url('images/runoob.png') 50% 50%/cover;"
+			style: "background:url('../images/runoob.png') 50% 50%/cover;"
 		},
 		wechat_public_platform: {
 			URL: "https://mp.weixin.qq.com/",
-			style: "background:url('images/wechat public platform.png') 50% 50%/cover;"
+			style: "background:url('../images/wechat public platform.png') 50% 50%/cover;"
 		},
 		LeetCode: {
 			URL: "https://leetcode-cn.com/",
-			style: "background:url('images/LeetCode.png') 50% 50%/cover;"
+			style: "background:url('../images/LeetCode.png') 50% 50%/cover;"
 		},
 
 		baidu: {
 			URL: "https://www.baidu.com",
-			style: "background:url('images/baidu.png') 50% 50%/cover;"
+			style: "background:url('../images/baidu.png') 50% 50%/cover;"
 		}
 	}
 	const engineList = {
@@ -246,11 +196,11 @@
 		pageIndexNode.value = newIndex;
 		nowPage = newIndex;
 	}
-	var links_LiNodesLengthChanged=()=>{
+	var links_LiNodesLengthChanged=turn=>{
 		var delta=updateTotalPage();						
 		updateLinksTopPosition();
 		updateNowPage(nowPage+delta);
-		moveYAnimation(linksNode,linksTopPosition[nowPage-1])
+		if(turn) moveYAnimation(linksNode,linksTopPosition[nowPage-1]);
 	}
 
 	
@@ -298,7 +248,7 @@
 			haveLinkMask.push(false);
 		}
 		addLinkNode.setAttribute("index", INDEX);
-		links_LiNodesLengthChanged();
+		links_LiNodesLengthChanged(false);
 		//创建搜索图标列表
 		for (key in engineList) {
 			var node = document.createElement("li");
@@ -453,7 +403,7 @@
 						aNode.innerHTML = thisLinkMask_Name.value;
 						liNode.appendChild(aNode);
 						linksNode.insertBefore(liNode, addLinkNode.parentNode);
-						links_LiNodesLengthChanged();
+						links_LiNodesLengthChanged(true);
 						setLinkTimer.push(null);
 						haveLinkMask.push(false);
 						haveLinkMask[parseInt(thisLinkMask.parentNode.children[0].getAttribute("index"))] = false;
@@ -494,8 +444,3 @@
 			}
 		}
 	}
-</script>
-<script src="independent_modules/clock/clock.js"></script>
-<script src="independent_modules/weather/weather.js"></script>
-
-</html>

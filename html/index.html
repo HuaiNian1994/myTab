@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Hi~~</title>
+	<base target="_self"><!-- 所有链接默认在本页面打开 -->
+	<link rel="icon" href="../images/myIcon.png">
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/main.css">
+	<link rel="stylesheet" href="../independent_modules/weather/weather.css">
+</head>
+
+<body style="opacity: 0">
+	<div class="test"></div>
+	<header>
+		<aside id="independent">
+			<span id="clock"></span>
+			<aside id="weather">
+				<span id="paint">&#xe9ba;</span>
+				<span id="temperature">0℃</span>
+				<span id="state"> Loading...</span>
+			</aside>
+		</aside>
+		<form id="search_father" action="https://www.google.com/search?" method="get">
+			<span>&#xe8f0;</span>
+			<ul class="engines"></ul>
+			<!-- 想要提交表单，要为相应元素设置name属性，控制键的生成。否则无法生成键值对中的键 -->
+			<input type="text" id="search" autocomplete="off" name="q" placeholder="What do you want...?">
+		</form>
+	</header>
+
+	<div class="content">
+		<ul id="links">
+			<li>
+				<div class="addLink">&#xe6ca;</div>
+			</li>
+		</ul>
+	</div>
+	<div class="pageControler">
+		<span class="upArrow">&#xecd0;</span>
+		<span><input type="text" class="pageIndex"></span>
+		<span style="font-size: 2.2vh;" class="totalPage"></span>
+		<span class="downArrow">&#xe662;</span>
+	</div>
+
+</body>
+<script src="../js/bezier-easing.min.js"></script>
+<script src="../js/main.js"></script>
+<script src="../independent_modules/clock/clock.js"></script>
+<script src="../independent_modules/weather/weather.js"></script>
+</html>

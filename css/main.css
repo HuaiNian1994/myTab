@@ -567,7 +567,8 @@
 			right: 10%;
 			border: none;
 			border-bottom: 1px solid black;
-			border-image: linear-gradient(90deg, transparent, black, transparent) 1 10;
+			-o-border-image: linear-gradient(90deg, transparent, black, transparent) 1 10;
+			   border-image: linear-gradient(90deg, transparent, black, transparent) 1 10;
 			font-family: ELECTRO;
 			background: none;
 			color: black;
@@ -611,6 +612,10 @@
 			background-color: rgba(205, 205, 205, 0.9);
 		}
 
+		.addLink::-moz-selection {
+			background: transparent;
+		}
+
 		.addLink::selection {
 			background: transparent;
 		}
@@ -621,6 +626,10 @@
 			border-top: 1px solid green;
 			background-color: red;
 			display: none;
+		}
+
+		span::-moz-selection {
+			background: transparent;
 		}
 
 		span::selection {
