@@ -428,11 +428,11 @@
 				display: grid;
 				grid-template-columns: 1fr;
 				position: absolute;
-				left: 0;
+				left: 2vw;
 				top: 34.55vh;
 				/*50-30.9/2=34.55*/
 				/* transform: translateY(-50%); */
-				width: 10vw;
+				width: 6vw;
 				height: 30.9vh;
 				opacity: 0.3;
 				transition: all 1s;
